@@ -1,0 +1,362 @@
+[chapter Eclipse IDE]
+[quote "Dá-se importância aos antepassados quando já não temos nenhum."--François Chateaubriand]
+
+[TODO Bonus: quem fizer um apendice pro FJ-11 mostrando o Netbeans ganha um presente do Sérgio]
+[TODO revisar para 3.6]
+
+Neste capítulo, você será apresentado ao Ambiente de Desenvolvimento Eclipse e suas principais 
+funcionalidades.
+
+[note]
+* É fundamental neste capítulo que os alunos fiquem de boca aberta em relação ao eclipse. 
+Toda e qualquer criatividade para alcançar este objetivo é valida.
+
+* Explicar o que é o Eclipse, destacando que é feito em Java (cabe um comentário aqui para 
+informar que o Visual Studio é feito em C/C++, ao invés de .Net). Lembrar que não é instalável
+ contudo, não é portável devido ao SWT.
+
+* Comentar da variedade de IDES para trabalhar com Java. A lista a seguir tem algumas sugestões:
+ WSAD, JDeveloper, JBuilder, NetBeans, JCreator, Java Studio Creator, Java Web Studio.
+
+* Comentar um pouco de Views e que, estas são agrupadas em Perspectivas, de acordo com a necessidade
+ que se tem no momento. Citar do caso em que se vai debugar ou desenvolver. O que eu preciso quando vou debugar?
+
+* Daqui em diante, seguir passo-a-passo a apostila, não deixando nenhum aluno para trás.
+Fazer passo a passo cada comando, todos juntos.
+ 
+* Como os alunos ainda não sabem o que são pacotes, ficar na perspectiva Resource.
+(ou melhor abrir a view Navigator na mão)
+
+* Explicar como "re-abrir" views. É muito comum fecharem o Console.
+(basta um ctrl+3 e digitar o nome da view)
+
+* Mostar também o Generate getters and setters e algo muito legal de ser feita é utilizar 
+o Local Repository do Eclipse. Pedir para deletar os .java e restaurá-los depois.
+
+* Lembre a eles que veremos varias vezes o Eclipse e vamos rever bastante as teclas de atalho
+e telas, para que eles nao se preocupem em absorver tudo de uma vez.
+[/note]
+
+[section O Eclipse]
+[index Eclipse]
+O Eclipse (http://www.eclipse.org) é uma IDE (integrated development environment). Diferente de uma 
+RAD, onde o objetivo é desenvolver o mais rápido possível através do ::arrastar-e-soltar do mouse::, onde 
+montanhas de código são gerados em background, uma IDE te auxilia no desenvolvimento, evitando se 
+intrometer e fazer muita mágica.
+
+O Eclipse é a IDE líder de mercado. Formada por um consórcio liderado pela IBM, possui seu código 
+livre. A última versão é a 3.6. Precisamos do Eclipse 3.1 ou posterior, pois a 
+partir dessa versão é que a plataforma dá suporte ao Java 5.0. Você precisa ter apenas a Java RE 
+instalada.
+
+Veremos aqui os principais recursos do Eclipse. Você perceberá que ele evita ao máximo te atrapalhar 
+e apenas gera trechos de códigos óbvios, sempre ao seu comando. Existem também centenas de plugins 
+gratuitos para gerar diagramas UML, suporte a servidores de aplicação, visualizadores de banco de 
+dados e muitos outros.
+
+Baixe o Eclipse do site oficial http://www.eclipse.org. Apesar de ser escrito em Java, a biblioteca 
+gráfica usada no Eclipse, chamada SWT, usa componentes nativos do sistema operacional. Por isso você 
+deve baixar a versão correspondente ao seu sistema operacional. 
+
+Descompacte o arquivo e pronto, basta rodar o executável.
+
+[box Outras IDEs]
+Uma outra IDE open source famosa é o Netbeans, da Oracle. (http://www.netbeans.org).
+
+Além dessas, Oracle, Borland e a própria IBM possuem IDEs comerciais e algumas versões mais
+restritas de uso livre.
+
+A empresa JetBrains desenvolve o IntelliJ IDEA, uma IDE paga que tem ganho muitos adeptos.
+[/box]
+
+[section Apresentando o Eclipse]
+[TODO atualizar screenshots para eclipse 3.4]
+Clique no ícone do Eclipse no seu Desktop.
+
+A primeira pergunta que ele te faz é que workspace você vai usar. Workspace define o diretório em que 
+as suas configurações pessoais e seus projetos serão gravados.
+
+[img images/eclipse/WorkspaceLauncher.png w=55%]
+
+Você pode deixar o diretório pré-definido.
+[TODO mudar screenshots e instruções pra Eclipse 3.4]
+Logo em seguida, uma tela de Welcome será aberta, onde você tem diversos links para tutoriais e ajuda. 
+Clique em Workbench. A tela de Welcome do Eclipse 3.3 e do 3.2 (que está na figura abaixo) são um pouco diferentes 
+da do 3.1.
+
+[img images/eclipse/EclipseSDK.png w=87%]
+
+[section Views e Perspective]
+
+Feche a tela de Welcome e você verá a tela abaixo. Nesta tela, destacamos as Views (em linha contínua) 
+e as Perspectives (em linha pontilhada) do Eclipse.
+
+[img images/eclipse/EclipseNew1.png w=87%]
+
+Mude para a perspectiva Resource, clicando no ícone ao lado da perspectiva Java, selecionando Other e 
+depois Resource. Neste momento, trabalharemos com esta perspectiva, antes da de Java, pois ela possui 
+um conjunto de Views mais simples. 
+
+[img images/eclipse/EclipsePerspectiveOther.png w=60%]
+
+A View Navigator mostra a estrutura de diretório assim como está no sistema de arquivos. A View 
+Outline mostra um resumo das classes, interfaces e enumerações declaradas no arquivo java atualmente 
+editado (serve também para outros tipos de arquivos). 
+
+No menu **Window -> Show View -> Other**, você pode ver as dezenas de Views que já vem embutidas no 
+Eclipse. Acostume-se a sempre procurar novas Views, elas podem te ajudar em diversas tarefas.
+
+[img images/eclipse/views1.png w=65%]
+
+[section Criando um projeto novo]
+
+Vá em **File -> New -> Project**. Seleciona Java Project e clique em Next.
+
+[img images/eclipse/NewProject.png w=95]
+
+[img images/eclipse/NewProject1_.png w=50%]
+
+[TODO trocar screenshot pro projeto se chamar BANCO]
+
+Crie um projeto chamado %%banco%%.
+
+Você pode chegar nessa mesma tela clicando com o botão da direta no espaço da View Navigator e 
+seguindo o mesmo menu. Nesta tela, configure seu projeto como na tela abaixo:
+
+[img images/eclipse/NewProject1.png w=50%]
+
+Isto é, marque "create separate source and output folders", desta maneira seus arquivos java e 
+arquivos class estarão em diretórios diferentes, para você trabalhar de uma maneira mais organizada.
+
+Clique em Finish. O Eclipse pedirá para trocar a perspectiva para Java; escolha "**No**" para 
+permanecer em Resource. Na View ::Navigator::, você verá o novo projeto e suas pastas e arquivos:
+
+[img images/eclipse/NavigatorView.png w=28%]
+
+Vamos iniciar nosso projeto criando a classe Conta. Para isso, vá em File -> New -> Other -> Class. 
+Clique em Next e crie a classe seguindo a tela abaixo:
+
+[img images/eclipse/NovaClasse.png w=55%]
+
+Clique em Finish. O Eclipse possui diversos wizards, mas usaremos o mínimo deles. O interessante é 
+usar o ::code assist:: e ::quick fixes:: que a ferramenta possui e veremos em seguida. Não se atente 
+às milhares de opções de cada wizard, a parte mais interessante do Eclipse não é essa.
+
+Escreva o método %%deposita%% como abaixo e note que o Eclipse reclama de erro em %%this.saldo%% pois 
+este atributo não existe.
+
+[img images/eclipse/ContaComErro.png w=50]
+
+Vamos usar o recurso do Eclipse de **quick fix**. Coloque o cursor em cima do erro e aperte Ctrl + 1. 
+
+[img images/eclipse/ContaComErro1.png w=55%]
+
+O Eclipse sugerirá possíveis formas de consertar o erro; uma delas é, justamente, criar o campo 
+%%saldo%% na classe %%Conta%%, que é nosso objetivo. Clique nesta opção.
+
+[img images/eclipse/ContaComErro2.png w=50%]
+
+Este recurso de quick fixes, acessível pelo Ctrl+1, é uma das grandes facilidades do Eclipse e é 
+extremamente poderoso. Através dele é possível corrigir boa parte dos erros na hora de programar e, 
+como fizemos, economizar a digitação de certos códigos repetitivos. No nosso exemplo, não precisamos 
+criar o campo antes; o Eclipse faz isso para nós. Ele até acerta a tipagem, já que estamos somando 
+ele a um double. O %%private%% é colocado por motivos que já estudamos.
+
+Vá ao menu File -> Save para gravar. Control + S tem o mesmo efeito.
+
+[img images/eclipse/SalvarEclipse.png w=50%]
+
+[section Criando o main]
+
+Crie uma nova classe chamada %%Principal%%. Vamos colocar um método %%main%% para  testar nossa Conta. 
+Em vez de digitar todo o método %%main%%, vamos usar o **code assist** do Eclipse. Escreva só %%main%% 
+e aperte Ctrl + Espaço logo em seguida. 
+
+[img images/eclipse/Main.png w=55]
+
+[img images/eclipse/Main1.png w=65]
+
+O Eclipse sugerirá a criação do método %%main%% completo; selecione esta opção. O control + espaço é 
+chamado de **code assist**. Assim como os quick fixes são de extrema importância. Experimente usar o 
+code assist em diversos lugares.
+
+Dentro do método %%main%%, comece a digitar o seguinte código:
+
+[code java]
+Conta conta = new Conta();
+conta.deposita(100.0);
+[/code]
+
+Observe que, na hora de invocar o método sobre o objeto conta, o Eclipse sugere os métodos possíveis. 
+Este recurso é bastante útil, principalmente quando estivermos programando com classes que não são as 
+nossas, como da API do Java. O Eclipse aciona este recurso quando você digita o ponto logo após um 
+objeto (e você pode usar o Ctrl+Espaço para acioná-lo).
+
+Vamos imprimir o saldo com %%System.out.println%%. Mas, mesmo nesse código, o Eclipse nos 
+ajuda. Escreva syso e aperte Ctrl+Espaço que o Eclipse escreverá System.out.println() para você. 
+
+Para imprimir, chame o %%conta.getSaldo()%%:
+
+[code java]System.out.println(conta.getSaldo());[/code]
+
+Note que o Eclipse acusará erro em %%getSaldo()%% porque este método não existe na classe %%Conta%%. 
+Vamos usar Ctrl+1 em cima do erro para corrigir o problema:
+
+[img images/eclipse/getSaldo.png w=90%]
+
+O Eclipse sugere criar um método %%getSaldo()%% na classe %%Conta%%. Selecione esta opção e o método 
+será inserido automaticamente.
+
+[code java]
+	public Object getSaldo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+[/code]
+
+Ele gera um método não exatamente como queríamos, pois nem sempre há como o Eclipse ter de antemão informações
+suficientes para que ele acerta a assinatura do seu método. Modifique o método %%getSaldo%% como segue:
+
+[code java]
+	public double getSaldo() {
+		return this.saldo;
+	}
+[/code]
+
+Esses pequenos recursos do Eclipse são de extrema utilidade. Dessa maneira, você pode programar sem 
+se preocupar com métodos que ainda não existem, já que a qualquer momento ele pode gerar o 
+esqueleto (a parte da assinatura do método).
+
+[section Rodando o main]
+
+Vamos rodar o método %%main%% dessa nossa classe. No Eclipse, clique com o botão direito no arquivo 
+%%Principal.java%% e vá em Run as... Java Application.
+
+[img images/eclipse/RunProgram.png w=50%]
+
+O Eclipse abrirá uma View chamada Console onde será apresentada a saída do seu programa:
+
+[img images/eclipse/Console.png w=90%]
+
+Quando você precisar rodar de novo, basta clicar no ícone verde de play na toolbar, que roda o 
+programa anterior. Ao lado desse ícone tem uma setinha onde são listados os 10 últimos executados.
+
+[section Pequenos truques]
+
+O Eclipse possui muitos atalhos úteis para o programador. Sem dúvida os 3 mais importantes de conhecer
+e de praticar são:
+
+[list]
+* **Ctrl + 1** Aciona o quick fixes com sugestões para correção de erros.
+
+* **Ctrl + Espaço** Completa códigos
+
+* **Ctrl + 3** Aciona modo de descoberta de menu. Experimente digitar **Ctrl+3** e depois digitar **ggas** e **enter**.
+Ou então de **Ctr + 3** e digite ::new class::.
+[/list]
+
+Você pode ler muito mais detalhes sobre esses atalhos no blog da Caelum:
+http://blog.caelum.com.br/as-tres-principais-teclas-de-atalho-do-eclipse/
+
+Existem dezenas de outros atalhos. Dentre os mais utilizados pelos desenvolvedores da Caelum, escolhemos os seguintes 
+para comentar:
+
+[list]
+
+* **Ctrl + F11** roda a última classe que você rodou. É o mesmo que clicar no ícone verde que parece um botão de play
+na barra de ferramentas.
+
+* **Ctrl + PgUp** e **Ctrl + PgDown** Navega nas abas abertas. Útil quando estiver editando vários arquivos ao mesmo tempo.
+
+* **Ctrl + Shift + F** Formata o código segundo as convenções do Java
+
+* **Ctrl + M** Expande a View atual para a tela toda (mesmo efeito de dar dois cliques no título da View)
+
+* **Ctrl + Shift + L** Exibe todos os atalhos possíveis.
+
+* **Ctrl + O** Exibe um outline para rápida navegação
+
+* **Alt + Shift + X e depois J** Roda o %%main%% da classe atual. Péssimo para pressionar! Mais fácil você digitar
+**Control+3** e depois digitar ::Run::!. Abuse desde já do **Control+3**
+[/list]
+
+Veremos mais no decorrer do curso, em especial quando virmos pacotes.
+
+[section Exercícios: Eclipse]
+[exercise]
+[question]Dentro do projeto %%banco%%, crie as classes %%ContaCorrente%% e %%ContaPoupanca%%
+ no nosso projeto do Eclipse. Na classe %%Conta%%, crie os métodos %%atualiza%% e %%saca%% como
+ no capítulo anterior. Desta vez, tente abusar do control + espaço e control + 1.
+
+Por exemplo:
+
+%%ContaCorr<ControlEspaco>  <ControlEspaco> = new <ControlEspaco>();%%
+
+Repare que até mesmo nomes de variáveis, ele cria para você! Acompanhe as dicas do instrutor.
+
+Muitas vezes nem declaramos a variável:
+
+[code java]
+new ContaCorrente();
+[/code]
+
+Vá nessa linha e de control +1. Ele vai sugerir e declarará a variável pra você.
+[/question]
+
+[question]Imagine que queremos criar um setter do saldo para a classe %%Conta%%. Dentro da classe 
+%%Conta%%, digite:
+
+%%setSa<ControlEspaco>%%
+
+O mesmo vale no caso de você querer reescrever um método. Dentro de %%ContaCorrente%% faça:
+
+%%atua<ControlEspaco>%%
+[/question]
+[question]
+Vá na sua classe que tem o %%main%% e segure o CONTROL apertado enquando você passa o mouse sobre o 
+seu código. Repare que tudo virou hyperlink. Clique em um método que você está invocando na classe 
+%%Conta%%.
+[/question]
+[question]
+Dê um clique da direita em um arquivo no navigator. Escolha **Compare With -> Local History**. O que é 
+esta tela?
+
+[note]
+	Comentar de versionamento em equipes, CVS e SVN.
+[/note]
+
+[img images/eclipse/LocalHistory.png w=95%][/question]
+
+[question]Use o Control + Shift + F para formatar o seu código. Dessa maneira, ele vai arrumar a 
+bagunça de espaçamento e enters do seu código.
+
+[img images/eclipse/Format2.png w=95%]
+[/question]
+[question]
+(opcional) Crie no seu projeto a classe %%AtualizadorDeContas%% como no capítulo anterior.
+[/question]
+[question]
+(opcional) O que são os arquivos .project e .classpath? Leia o conteúdo deles.
+[/question]
+[question]
+(opcional) Clique da direita no projeto, propriedades. É uma das telas mais importantes do Eclipse, 
+onde você pode configurar diversas funcionalidades para o seu projeto, como compilador, versões, 
+formatador, cvs e outros.
+
+[img images/eclipse/Properties.png w=95%]
+[/question]
+[/exercise]
+
+[section Discussão em aula: Refactoring]
+
+O instrutor vai mostrar o que é uma **refatoração** e como usar esse poderoso recurso no Eclipse.
+
+[note]
+Comente que refatorar sempre é uma ótima atitude para melhorar o design das classes.
+Que o Eclipse possui otimos recursos para ajudar a gente a fazer refatorações.
+Fala que tem um livro (avancado) sobre isso, do Martin Fowler.
+
+Mostra o menu Refactor do Eclipse e faz um rename numa variável (alunos babam).
+Depois faz um extract method qualquer ou outro refactoring só pra mostrar.
+Nao fique só no rename!
+[/note]

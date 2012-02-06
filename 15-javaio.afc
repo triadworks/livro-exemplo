@@ -1,0 +1,655 @@
+[chapter Pacote java.io]
+[quote "A benevolência é sobretudo um vício do orgulho e não uma virtude da alma." 
+	-- Doantien Alphonse François (Marquês de Sade)]
+	
+Ao término desse capítulo, você será capaz de:
+[list]
+* ler e escrever bytes, caracteres e Strings de/para a entrada e saída padrão;
+* ler e escrever bytes, caracteres e Strings de/para arquivos;
+* utilizar buffers para agilizar a leitura e escrita através de fluxos;
+* usar Scanner e PrintStream.
+[/list]
+
+[note]
+* É importante também olhar todas as assinaturas dos métodos antes para não ser surpreendido. 
+Por exemplo, esquecer que usamos write ao invés de print.
+
+* Enfatizar que a Sun abusa do polimorfismo, usando as classes abstratas _InputStream_ e _OutputStream_.
+
+* Utilizar-se do desenho, como no da apostila, para mostrar o _Decorator_ (pattern usado no java.io). Mas
+nao precisa citar a palavra Decorator. Alias, comece pelo desenho antes de qualquer codigo!
+
+* Saliente que o objetivo não é decorar o nome das classes, e sim entender porque tanta 
+gente usa _InputStream_ como argumento e retorno, e que mesmo as classes simples, como 
+PrintStream_ e _Scanner_, no fundo usam o que estamos vendo.
+* Falar do template method no final
+[/note]
+
+[section Conhecendo uma API]
+Vamos passar a conhecer APIs do Java. %%java.io%% e %%java.util%% possuem as classes que 
+você mais comumente vai usar, não importando se seu aplicativo é desktop, web, ou mesmo para 
+celulares.
+
+Apesar de ser importante conhecer nomes e métodos das classes mais utilizadas, o interessante aqui é 
+que você enxergue que todos os conceitos previamente estudados são aplicados a toda hora nas classes 
+da biblioteca padrão. 
+
+Não se preocupe em decorar nomes. Atenha-se em entender como essas classes estão relacionadas e 
+como elas estão tirando proveito do uso de interfaces, polimorfismo, classes abstratas e 
+encapsulamento. Lembre-se de estar com a documentação (javadoc) aberta durante o contato com esses 
+pacotes.
+
+Veremos também threads e sockets em capítulos posteriores, que ajudarão a condensar nosso 
+conhecimento, tendo em vista que no exercício de sockets utilizaremos todos conceitos aprendidos, 
+juntamente com as várias APIs.
+
+[section Orientação a objetos no java.io]
+[index JAVA.IO]
+
+[note]
+Fundamental bater firme nesse ponto, mas particularmente é bom falar isso
+com mais enfase depois de ter mostrado a troca de %%FileInputStream%% por %%System.in%%
+ao escrever o codigo que le de um arquivo.
+[/note]
+
+Assim como todo o resto das bibliotecas em Java, a parte de controle de entrada e saída de dados 
+(conhecido como **io**) é orientada a objetos e usa os principais conceitos mostrados até agora: 
+interfaces, classes abstratas e polimorfismo.
+
+[index ARQUIVOS]
+[index SOCKETS]
+[index ENTRADA E SAÍDA]
+A idéia atrás do polimorfismo no pacote %%java.io%% é de utilizar fluxos de entrada (%%InputStream%%) 
+e de saída (%%OutputStream%%) para toda e qualquer operação, seja ela relativa a um **arquivo**, a um campo
+**blob** do banco de dados, a 
+uma conexão remota via **sockets**, ou até mesmo às **entrada** e **saída padrão** de um programa 
+(normalmente o teclado e o console).
+
+As classes abstratas %%InputStream%% e %%OutputStream%% definem, respectivamente, o comportamento 
+padrão dos fluxos em Java: em um fluxo de entrada, é possível ler bytes e, no fluxo de saída, 
+escrever bytes. 
+
+A grande vantagem dessa abstração pode ser mostrada em um método qualquer que utiliza um 
+%%OutputStream%% recebido como argumento para escrever em um fluxo de saída. Para onde o método está 
+escrevendo? Não se sabe e não importa: quando o sistema precisar escrever em um arquivo ou em uma 
+socket, basta chamar o mesmo método, já que ele aceita qualquer filha de %%OutputStream%%!
+
+[section InputStream, InputStreamReader e BufferedReader] 
+
+[note]
+Bom começar na lousa usando apenas FileInputStream. Só se referenciar a InputStream quando
+for mostrar a necessidade de usar System.in tambem. Faca perguntas pros alunos, como
+por exemplo: "O que é essencial para um leitor de arquivo que pra ele seria ate
+obrigatorio voce passar isso no construtor dele? Algo que sem isso ele nao consegue
+funcionar?" forcando a ideia de passar o nome do arquivo para o construtor.
+[/note]
+
+
+Para ler um %%byte%% de um arquivo, vamos usar o leitor de arquivo, o %%FileInputStream%%.
+Para um %%FileInputStream%% conseguir ler um byte, ele precisa saber de onde ele deverá ler.
+Essa informação é tão importante que quem escreveu essa classe obriga você a passar o nome
+do arquivo pelo construtor: sem isso o objeto não pode ser construído. 
+
+[code java #]
+	class TestaEntrada {
+		public static void main(String[] args) throws IOException {
+			InputStream is = new FileInputStream("arquivo.txt");
+			int b = is.read();
+		}
+	}
+[/code]
+
+[index INPUTSTREAM]
+[index FILEINPUTSTREAM]
+A classe %%InputStream%% é abstrata e %%FileInputStream%% uma de suas filhas concretas. 
+%%FileInputStream%% vai procurar o arquivo no  diretório em que a JVM fora invocada 
+(no caso do Eclipse, vai ser a partir de dentro do diretório do projeto). Alternativamente 
+você pode usar um caminho absoluto.
+
+Quando trabalhamos com %%java.io%%, diversos métodos lançam %%IOException%%, que é uma exception do 
+tipo checked - o que nos obriga a tratá-la ou declará-la. Nos exemplos aqui, estamos declarando %%IOException%% 
+através da clausula %%throws%% do %%main%% apenas para facilitar o exemplo. Caso a exception ocorra, a JVM 
+vai parar, mostrando a stacktrace. Esta não é uma boa prática em uma aplicação real: trate suas exceptions
+para sua aplicação poder abortar elegantemente.
+
+%%InputStream%% tem diversas outras filhas, como %%ObjectInputStream%%, %%AudioInputStream%%, 
+%%ByteArrayInputStream%%, entre outras.
+
+[index INPUTSTREAMREADER]
+Para recuperar um caractere, precisamos traduzir os bytes com o encoding dado para o respectivo 
+código unicode, isso pode usar um ou mais bytes. Escrever esse decodificador é muito complicado, quem faz 
+isso por você é a classe %%InputStreamReader%%.
+
+[code java #]
+	class TestaEntrada {
+		public static void main(String[] args) throws IOException {
+			InputStream is = new FileInputStream("arquivo.txt");
+			InputStreamReader isr = new InputStreamReader(is);
+			int c = isr.read();
+		}
+	}
+[/code]
+
+[note]
+Esse codigo:
+
+[code java]
+InputStreamReader isr = new InputStreamReader(is);
+[/code]
+
+Seria mais elegante escrito assim:
+
+[code java]
+Reader isr = new InputStreamReader(is);
+[/code]
+
+Pois o %%BufferedReader%% aceita qualquer %%Reader%% no construtor, e %%Reader%% tem %%.read()%% definido.
+Mas acho que é abusar dos alunos falar disso.
+[/note]
+
+O construtor de %%InputStreamReader%% pode receber o encoding a ser utilizado como parâmetro, se 
+desejado, tal como %%UTF-8%% ou %%ISO-8859-1%%.
+
+[box Encodings]
+Devido a grande quantidade de aplicativos internacionalizados de hoje em dia, é imprescindível
+que um bom programador entenda bem o que são os character encodings e o Unicode. O blog
+da Caelum possui um bom artigo a respeito:
+
+http://blog.caelum.com.br/2006/10/22/entendendo-unicode-e-os-character-encodings/
+[/box]
+
+%%InputStreamReader%% é filha da classe abstrata %%Reader%%, que possui diversas outras filhas - são classes 
+que manipulam chars.
+
+Apesar da classe abstrata %%Reader%% já ajudar no trabalho de manipulação de caracteres, ainda seria difícil pegar 
+uma %%String%%. A classe %%BufferedReader%% é um %%Reader%% que recebe outro %%Reader%% pelo construtor e 
+concatena os diversos chars para formar uma %%String%% através do método %%readLine%%:
+
+[code java #]
+	class TestaEntrada {
+		public static void main(String[] args) throws IOException {
+			InputStream is = new FileInputStream("arquivo.txt");
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String s = br.readLine();
+		}
+	}
+[/code]
+
+Como o próprio nome diz, essa classe lê do %%Reader%% por pedaços (usando o buffer) para evitar realizar 
+muitas chamadas ao sistema operacional. Você pode até configurar o tamanho do buffer pelo construtor.
+
+É essa a composição de classes que está acontecendo:
+
+[img images/javaio/readers1.png w=90]
+
+[note]
+Voce pode comecar o capitulo desenhando esse esquema, da direita para a esquerda:
+
+Primeiramente fale que existe uma classe Leitora (e na lousa escreva %%InputStream%%,
+assim as pessoas percebem que realmente nao ha necessidade de decorar nomes nesse
+momento). Explique que ela le bytes, porem é abstrata, entao usaremos a %%FileInputStream%%.
+
+Faca uma seta saindo dela, indicando que essa seta devolve %%byte%%. Pergunte a sala
+se é com byte que queremos trabalhar. Alguns responderao que precisamos de char, outros
+de Strings, outros de linhas. Lembre-os de que no Java é burocratico, e de que precisamos
+ir passa a passo, e o proximo passo é trabalhar com %%char%%.
+
+Pergunte a eles como vamos converter de byte a char. Alguns darao ideias mirabolantes,
+relembre-os se alguma rotina é comum, provavelmente ja existe uma classe que faz esse trabalho!
+Ai apresente a %%InputStreamReader%%. Faca questoes parecidas para chegar ate o %%BufferedReader%%.
+
+Ate agora voce nao deve ter escrito UMA linha de codigo. Ao passar para o codigo, peca
+ajuda aos alunos. Eles costumam acertar muito bem! Quando chegar no primeiro new,
+que é do %%FileInputStream%%, pergunte "o que voces acham que é fundamental um 
+%%FileInputStream%% saber para poder funcionar". Vao falar que é o nome do arquivo!
+Lembre-os que é justamente esse o bom uso dos construtores: receber dependencias
+necessarias.
+[/note]
+
+[index Decorator Pattern]
+Esse padrão de composição é bastante utilizado e conhecido. É o **Decorator Pattern**.
+
+Aqui, lemos apenas a primeira linha do arquivo. O método %%readLine%% devolve a linha que foi lida e 
+muda o cursor para a próxima linha. Caso ele chegue ao fim do %%Reader%% (no nosso caso, fim do 
+arquivo), ele vai devolver %%null%%. Então, com um simples laço, podemos ler o arquivo por inteiro:
+
+[code java #]
+	class TestaEntrada {
+		public static void main(String[] args) throws IOException {
+			InputStream is = new FileInputStream("arquivo.txt");
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+
+			String s = br.readLine(); // primeira linha
+			
+			while (s != null) {
+				System.out.println(s);
+				s = br.readLine();
+			}
+			
+			br.close();
+		}
+	}
+[/code]
+
+[section Lendo Strings do teclado]
+Com um passe de mágica, passamos a ler do teclado em vez de um arquivo, utilizando o %%System.in%%,  
+que é uma referência a um %%InputStream%% o qual, por sua vez, lê da entrada padrão.
+
+[note]
+No desenho da lousa, troque a seta de onde o %%InputStreamReader%% esta lendo. Assim fica
+claro que no codigo é só isso que eles tem de alterar tambem.
+
+Ao trocar o %%FIS%% pelo %%System.in%%, va pedindo ajuda dos alunos para escrever
+as mudancas no restante do codigo, de linha em linha. Alguns vao perceber que so precisa realmente
+alterar metade de uma linha! Isso tem um grande efeito entre os alunos, ressalte bastante
+que a mudanca é minima, e volte a falar que o java é muito bom quando vamos alterar
+ou criar novas funcionalidades: precisamos escrever pouco, gracas ao bom uso do OO.
+[/note]
+
+[code java #]
+	class TestaEntrada {
+		public static void main(String[] args) throws IOException {
+			InputStream is = System.in;
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String s = br.readLine();
+			
+			while (s != null) {
+				System.out.println(s);
+				s = br.readLine();
+			}
+		}
+	}
+[/code]
+
+[note]
+Alguns alunos vao esperar que voce faca %%new System.in%%, o que é um absurdo
+pra gente, mas faz algum sentido eles pensarem que isso é uma classe. Entao mostre
+pelo javadoc que %%System.in%% ja é uma referencia para alguem do tipo %%InputStream%%, 
+e nao uma classe.
+
+Outro: sera que devemos fazer br.close() aqui? Eu acho que sim, pq o System.in.close() nao
+tem efeito, mas é uma boa pratica ja que nao sabemos quem é esse BufferedReader.
+[/note]
+
+Apenas modificamos a quem a variável %%is%% está se referindo. Podemos receber argumentos do tipo 
+%%InputStream%% e ter esse tipo de abstração: não importa exatamente de onde estamos lendo esse 
+punhado de bytes, desde que a gente receba a informação que estamos querendo. Como na figura:
+
+[img images/javaio/readers2.png w=90]
+
+Repare que a ponta da direita poderia ser qualquer %%InputStream%%, seja %%ObjectInputStream%%, 
+%%AudioInputStream%%, %%ByteArrayInputStream%%, ou a nossa %%FileInputStream%%. Polimorfismo! Ou 
+você mesmo pode criar uma filha de %%InputStream%%, se desejar.
+
+Por isso é muito comum métodos receberem e retornarem %%InputStream%%, em vez de suas filhas 
+específicas. Com isso, elas desacoplam as informações e escondem a implementação, facilitando a 
+mudança e manutenção do código. Repare que isso vai ao encontro de tudo o que aprendemos durante os 
+capítulos que apresentaram classes abstratas, interfaces, polimorfismo e encapsulamento.
+
+[section A analogia para a escrita: OutputStream]
+
+Como você pode imaginar, escrever em um arquivo é o mesmo processo:
+
+[img images/javaio/writers.png w=90]
+
+[note]
+É importante estar na lousa com o codigo do %%TestaEntrada%%, e aqui
+voce simplesmente pega uma caneta de outra cor e vai substituindo %%Reader%%
+por %%Writer%% e %%Input%% por %%Output%%, sempre com ajuda dos alunos,
+perguntando pra eles o que fazer. Essa estrategia gera um efeito legal entre
+os alunos, pois eles sentem que sabem tambem, pois é analogo.
+[/note]
+
+[code java #]
+	class TestaSaida {
+		public static void main(String[] args) throws IOException {
+			OutputStream os = new FileOutputStream("saida.txt");
+			OutputStreamWriter osw = new OutputStreamWriter(os);
+			BufferedWriter bw = new BufferedWriter(osw);
+	
+			bw.write("caelum");
+			
+			bw.close();
+		}
+	}
+[/code]
+
+Lembre-se de dar ::refresh:: (clique da direita no nome do projeto, refresh) no seu projeto do Eclipse para que o arquivo criado apareça. O 
+%%FileOutputStream%% pode receber um booleano como segundo parâmetro, para indicar se você quer 
+reescrever o arquivo ou manter o que já estava escrito (%%append%%).
+
+O método %%write%% do %%BufferedWriter%% não insere o(s) caractere(s) de quebra de linha. Para isso, 
+você pode chamar o método %%newLine%%.
+
+[box Fechando o arquivo]
+É importante sempre fechar o arquivo. Você pode fazer isso chamando diretamente o método %%close%%
+do %%FileInputStream%%/%%OutputStream%%, ou ainda chamando o %%close%% do %%BufferedReader%%/%%Writer%%.
+Nesse último caso, o %%close%% será cascateado para os objetos os quais o %%BufferedReader%%/%%Writer%%
+utiliza para realizar a leitura/escrita, além dele fazer o **flush** dos buffers no caso da escrita.
+
+É comum que o %%close%% esteja dentro de um bloco 
+%%finally%%. Se um arquivo for esquecido aberto e a referência para ele for perdida, ele será fechado 
+pelo ::garbage collector::, que veremos mais a frente, por causa do %%finalize%%. Mas não é bom você 
+se prender a isso. Se você esquecer de fechar o arquivo, no caso de um programa minúsculo como esse, 
+o programa vai terminar antes que o tal do garbage collector te ajude, resultando em um arquivo não 
+escrito (os bytes ficaram no buffer do %%BufferedWriter%%).
+
+Problemas similares podem acontecer com leitores que não forem fechados.
+[/box]
+
+[section Uma maneira mais fácil: Scanner e PrintStream]
+
+A partir do Java 5, temos a classe %%java.util.Scanner%%, que facilita bastante o trabalho de ler de um 
+%%InputStream%%. Além disso, a classe %%PrintStream%% possui um construtor que já recebe o 
+nome de um arquivo como argumento. Dessa forma, a leitura do teclado com saída para um arquivo ficou 
+muito simples:
+
+[code java]
+		Scanner s = new Scanner(System.in);
+		PrintStream ps = new PrintStream("arquivo.txt");
+		while (s.hasNextLine()) {
+			ps.println(s.nextLine());
+		}
+[/code]
+
+Nenhum dos métodos lança %%IOException%%: %%PrintStream%% lança %%FileNotFoundException%% se você 
+o construir passando uma %%String%%. Essa exceção é filha de %%IOException%% e indica que o arquivo 
+não foi encontrado. O %%Scanner%% considerará que chegou ao fim se uma %%IOException%% for lançada, 
+mas o %%PrintStream%% simplesmente engole exceptions desse tipo. Ambos possuem métodos para você 
+verificar se algum problema ocorreu.
+
+A classe %%Scanner%% é do pacote %%java.util%%. Ela possui métodos muito úteis para trabalhar com 
+Strings, em especial, diversos métodos já preparados para pegar números e palavras já formatadas 
+através de expressões regulares. Fica fácil parsear um arquivo com qualquer formato dado.
+
+[box System.out]
+Como vimos no capítulo passado, o atributo %%out%% da classe 
+%%System%% é do tipo %%PrintStream%% (e, portanto, é um %%OutputStream%%).
+
+[/box]
+
+[section Um pouco mais...]
+[list]
+	* Existem duas classes chamadas %%java.io.FileReader%% e %%java.io.FileWriter%%. Elas são atalhos 
+	para a leitura e escrita de arquivos.
+	
+	* O %%do { .. } while(condicao);%% é uma alternativa para se construir um laço. Pesquise-o e utilize-o
+	no código para ler um arquivo, ele vai ficar mais sucinto (você nao precisará ler a primeira linha fora
+	do laço).
+[/list]
+
+[section Exercícios: Java I/O]
+[exercise]
+	[question]
+		Crie um projeto novo chamado %%teste-io%%.
+		
+		Crie um programa (simplesmente uma classe com um %%main%%) que leia da entrada padrão. Para 
+		isso, você vai precisar de um %%BufferedReader%% que leia do %%System.in%% da mesma forma 
+		como fizemos.
+		
+		Não digite esses nomes de classes complicados! Use o **ctrl+espaço** para te
+		auxiliar, porque além de te ajudar com o nome, ele colocará o import
+		no devido lugar. 
+		
+		Cuidado que existe mais de uma classe chamada %%InputStream%%: queremos
+		a do pacote %%java.io%%.
+		
+		[code java #]
+			public class TestaEntrada {
+			
+				// está faltando o throws IOException!! Peça auxílio para o Eclipse!
+				
+				public static void main(String[] args) {
+					InputStream is = System.in;
+					InputStreamReader isr = new InputStreamReader(is);
+					BufferedReader br = new BufferedReader(isr);
+
+					String linha = br.readLine(); // primeira linha
+					
+					while (linha != null) {
+						System.out.println(linha);
+						linha = br.readLine();
+					}
+				}
+			}
+		[/code]
+		
+		O compilador vai reclamar que você não está tratando algumas exceções (como 
+		%%java.io.IOException%%). Utilize a cláusula %%throws%% para deixar "escapar" a exceção pelo 
+		seu %%main%%, ou use os devidos %%try%%/%%catch%%. Utilize o ::quick fix:: do Eclipse para isso
+		(Ctrl + 1). Deixar todas as exceptions passarem desapercebidas não é uma boa prática! Você pode 
+		usar aqui, pois estamos focando apenas no aprendizado da utilização do %%java.io%%.
+		
+		Rode sua aplicação. Através da ::View Console:: você pode digitar algumas linhas para que
+		seu programa as capture.
+		
+		[box EOF]
+		Quando rodar sua aplicação, para encerrar a entrada de dados do teclado, é necessário 
+		enviarmos um sinal de fim de stream. É o famoso **EOF**, End Of File. 
+		
+		No Linux/Mac/Solaris/Unix você faz isso com o %%CONTROL+D%%. No Windows, use o %%CONTROL+Z%%.
+		[/box] 
+		
+	[/question]
+	
+	[question]
+		Vamos ler de um arquivo, em vez do teclado. Antes, vamos criar o arquivo que será lido pelo 
+		programa:
+		
+		[list letter]
+		* Clique com o botão direito em cima do seu projeto e selecione **New -> File**:
+		
+		[img images/javaio/newfile.png w=60]
+		
+		* Nesta tela, digite o nome do arquivo no lugar indicado:
+		
+		[img images/javaio/newfile2.png w=70]
+		
+		* Troque na classe %%TestaEntrada%% o %%System.in%% por um %%new FileInputStream%%:
+		
+			[code java]
+				InputStream is = new FileInputStream("arquivo.txt");
+			[/code]
+		[/list]
+	[/question]
+	
+	[question]
+		(conceitual) Seu programa lê todas as linhas desse arquivo. Repare na utilização do 
+		polimorfismo. Como ambos são %%InputStream%%, isso faz com que eles se encaixem no 
+		%%InputStreamReader%%.
+	[/question]
+	
+	[question]
+		Repare que, no final, só usamos mesmo o %%BufferedReader%%. As referências para  %%InputStream%% e 
+		para %%InputStreamReader%% são apenas utilizadas temporariamente.  Portanto, é comum encontrarmos o 
+		seguinte código nesses casos:
+
+			[code java]
+				BufferedReader br = new BufferedReader(
+										new InputStreamReader(
+											new FileInputStream("arquivo.txt")));
+
+				String linha = br.readLine(); // primeira linha
+			[/code]
+		
+		Claro que devemos evitar um código mais sucinto em vez de sacrificar legibilidade,
+		mas este código em particular é bem comum e aceitável. Faça a alteração no seu programa!		
+	[/question]
+	
+	[question]
+		Utilize a classe %%Scanner%% do Java 5 para ler de um arquivo e colocar na tela. O código vai ficar 
+		incrivelmente pequeno.
+		
+		[code java #]
+	class EntradaDeUmArquivo {
+		public static void main(String[] args) throws IOException {
+			InputStream is = new FileInputStream("arquivo.txt");
+			
+			Scanner entrada = new Scanner(is);
+			while (entrada.hasNextLine()) {
+				System.out.println(entrada.nextLine());
+			}
+			
+			is.close();
+		}
+	}
+		[/code]
+		
+		Depois troque a variável %%is%% para que ela se refira ao %%System.in%%.
+		Agora você está lendo do teclado!
+	[/question]
+	
+	[question]
+		(opcional) Altere seu programa para que ele leia do arquivo e, em vez de jogar na tela, 
+		jogue em um outro arquivo. Você vai precisar, além do código anterior para ler de um arquivo, do 
+		código para escrever em um arquivo. Para isso, você pode usar o %%BufferedWriter%%
+		ou o %%PrintStream%%, sendo este último de mais fácil manipulação.
+		
+		Se for usar o %%BufferedWriter%%, fazemos assim parar abri-lo:
+		
+		[code java]
+			OutputStream os = new FileOutputStream("saida.txt");
+			OutputStreamWriter osw = new OutputStreamWriter(os);
+			BufferedWriter bw = new BufferedWriter(osw);
+		[/code]
+		
+		Dentro do loop de leitura do teclado, você deve usar %%bw.write(x)%%, onde %%x%% é a linha 
+		que você leu. Use %%bw.newLine()%% para pular de linha. Não se esqueça de, no término do 
+		loop, dar um %%bw.close()%%. Você pode seguir o modelo:
+
+		[code java]
+			while (entrada.hasNextLine()) {
+				String linha = entrada.nextLine();
+				bw.write(linha);
+				bw.newLine(); 
+			}
+
+			bw.close();
+		[/code]
+
+		Após rodar seu programa, dê um refresh no seu projeto (clique da direita no nome do projeto, 
+		refresh) e veja que ele criou um arquivo %%saida.txt%% no diretório.
+		
+	[/question]
+	
+	[question]
+		(opcional) Altere novamente o programa para ele virar um pequeno editor: lê do teclado e 
+		escreve em arquivo. Repare que a mudança a ser feita é mínima! 
+	[/question]
+	
+	[question]
+		(opcional) A classe %%Scanner%% é muito poderosa! Consulte seu javadoc
+		para saber sobre o %%delimiter%% e os outros métodos %%next%%.
+	[/question]
+[/exercise]
+
+[section Discussão em aula: Design Patterns e o Template Method]
+
+Aplicar bem os conceitos de orientação a objetos é sempre uma grande dúvida. Sempre queremos
+encapsular direito, favorecer a flexibilidade, desacoplar classes, escrever código elegante
+e de fácil manutenção. E ouvimos falar que a Orientação a Objetos ajuda em tudo isso.
+
+Mas, onde usar herança de forma saudável? Como usar interfaces? Onde o polimorfismo me ajuda?
+Como encapsular direito? Classes abstratas são usadas em que situações?
+
+Muitos anos atrás, grandes nomes do mundo da orientação a objetos perceberam que
+criar bons designs orientados a objetos era um grande desafio para muitas pessoas. Perceberam
+que muitos problemas de OO apareciam recorrentemente em vários projetos; e que as pessoas
+já tinham certas soluções para esses problemas clássicos (nem sempre muito elegantes).
+
+O que fizeram foi criar **soluções padrões para problemas comuns** na orientação a objetos,
+e chamaram isso de **Design Patters**, ou Padrões de Projeto. O conceito vinha da arquitetura
+onde era muito comum ter esse tipo de solução. E, em 1994, ganhou grande popularidade na
+computação com o livro ::Design Patterns: Elements of Reusable Object-Oriented Software::,
+um catálogo com várias dessas soluções escrito por Erich Gamma, Ralph Johnson, Richard Helm e
+John Vlissides (a Gangue dos Quatro, GoF).
+
+::Design Patterns:: tornou-se referência absoluta no bom uso da orientação a objetos. Outros
+padrões surgiram depois, em outras literaturas igualmente consagradas. O conhecimento dessas
+técnicas é imprencindível para o bom programador.
+
+**Discuta com o instrutor como Design Patterns ajudam a resolver problemas de modelagem em sistemas
+orientados a objetos. Veja como Design Patterns são aplicados em muitos lugares do próprio Java.**
+
+O instrutor comentará do %%Template Method%% e mostrará o código fonte do método read() da classe
+%%java.io.InputStream%%:
+
+[code java #]
+   public int read(byte b[], int off, int len) throws IOException {
+       if (b == null) {
+          throw new NullPointerException();
+       } else if (off < 0 || len < 0 || len > b.length - off) {
+          throw new IndexOutOfBoundsException();
+       } else if (len == 0) {
+          return 0;
+       }
+ 
+       int c = read();
+       if (c == -1) {
+          return -1;
+       }
+    
+       b[off] = (byte) c;
+ 
+       int i = 1;
+       try {
+          for (; i < len ; i++) {
+             c = read();
+             if (c == -1) {
+                break;
+             }
+             b[off + i] = (byte)c;
+          }
+       } catch (IOException ee) {
+       }
+       return i;
+    }
+[/code]
+
+**Discuta em aula como esse método aplica conceitos importantes da orientação a objetos e 
+promove flexibilidade e extensibilidade.**
+
+[note]
+Ao instrutor: mostra que o read é abstrato e o q eh template method. nao aprofundar.
+
+--------------
+
+Quando alguém aprende o que é Design Pattern, ou mesmo um novo Design Pattern, fica com aquele 
+sentimento de que já viu isso em algum lugar antes. A API do Java SE é um excelente lugar para 
+encontrar milhares de exemplos de Design Patterns.
+
+A classe abstrata %%java.io.InputStream%% é um excelente exemplo. Ela possui um conjunto de métodos 
+para leitura de bytes, porém apenas um deles é abstrato: o método %%read%% que lê apenas um único byte. 
+Segue seu fonte:
+
+[code java]
+public abstract int read() throws IOException;
+[/code]
+
+Ele é abstrato pois essa classe não sabe exatamente de onde será realizada a leitura: da entrada 
+padrão? de um arquivo? de uma socket? Esse comportamento vai ser definido através da reescrita 
+desse método em uma de suas subclasses concretas: %%FileInputStream%%, %%SocketInputStream%%, 
+%%ByteArrayInputStream%%, entre outras. Essas sim sabem realizar a operação de leitura de um byte.
+
+Se a classe %%InputStream%% não sabe ler um byte, como então é possível existir um método %%read%% 
+que recebe um array de bytes a ser preenchido pela leitura, que não seja abstrato? Vamos ver o 
+fonte deste método (ele recebe, além da array a ser preenchida, a posição inicial e quantos bytes 
+devem ser lidos):
+
+Não se preocupe muito com a implementação em si. Veja apenas as linhas 10 e 20 e repare nas
+chamadas ao método %%read%% abstrato. Isso é possível pois sabemos que não existe como instanciar a 
+classe %%InputStream%%: ela é abstrata. Essa invocação recairá sobre um objeto que foi instanciado, 
+logo ele possuirá uma implementação deste método %%read%%.
+
+Esse é uma ótima ilustração do **Template Method**, um dos Design Patterns do livro do GoF. Os métodos 
+%%read%% que lêem mais de um byte são templates: eles possuem o ::algoritmo:: em si, mas ainda ::falta um pouco::
+para que toda a funcionalidade deles esteja pronta. Essa parte que falta é suprida com a ::implementação concreta::
+do método %%read%% nas classes filhas de %%InputStream%%. Quando a classe filha implementa esse método, os 
+demais métodos de %%InputStream%% que dependem deste (os template methods) estarão prontos para uso!
+
+Ainda vamos ver como funcionam os input e output streams em detalhes no capítulo de java.io. Mas
+já sabemos que usam conceitos importantes da boa modelagem orientada a objetos.
+[/note]

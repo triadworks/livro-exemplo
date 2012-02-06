@@ -1,0 +1,728 @@
+[chapter Programação Concorrente e Threads]
+
+[quote "O único lugar onde o sucesso vem antes do trabalho é no dicionário." -- Albert Einstein]
+
+Ao término desse capítulo, você será capaz de:
+[list]
+	* executar tarefas simultaneamente;
+	* colocar tarefas para aguardar até que um determinado evento ocorra;
+	* entender o funcionamento do Garbage Collector.
+[/list]
+
+[note]
+* você não tem controle sobre o escalonador
+
+* garbage collector: você não sabe quando ele passa
+
+* não precisa passar código de syncrhonized se achar a turma fraca ou estiver atrasado, 
+mas é necessário demonstrar os problemas graves que podem aparecer caso duas threads 
+compartilhem acesso a um mesmo objeto
+
+* definir o termo Thread Safe e comparar _HashMap_ com _Hashtable_ e _ArrayList_ 
+com _Vector_ rapidamente
+[/note]
+
+[section Threads]
+[title "Duas tarefas ao mesmo tempo"]
+Em várias situações, precisamos "rodar duas coisas ao mesmo tempo". Imagine um programa que gera
+um relatório muito grande em PDF. É um processo demorado e, para dar alguma satisfação para o usuário,
+queremos mostrar uma barra de progresso. Queremos então gerar o PDF e ::ao mesmo tempo:: atualizar a
+barrinha.
+
+Pensando um pouco mais amplamente, quando usamos o computador também fazemos várias coisas simultaneamente:
+queremos navegar na internet e ::ao mesmo tempo:: ouvir música.
+
+A necessidade de se fazer várias coisas simultaneamente, ao mesmo tempo, **paralelamente**, aparece
+frequentemente na computação. Para vários programas distintos, normalmente o próprio sistema operacional
+gerencia isso através de vários ::processos:: em paralelo.
+
+Em um programa só (um processo só), se queremos executar coisas em paralelo, 
+normalmente falamos de **Threads**.
+
+[title Threads em Java]
+Em Java, usamos a classe %%Thread%% do pacote %%java.lang%% para criarmos 
+::linhas de execução:: paralelas. A classe %%Thread%% recebe como argumento um
+objeto com o código que desejamos rodar. Por exemplo, no programa de PDF e barra
+ de progresso:
+
+[code java]
+public class GeraPDF {
+	public void rodar () {
+		// lógica para gerar o pdf...
+	}
+}
+
+public class BarraDeProgresso {
+	public void rodar () {
+		// mostra barra de progresso e vai atualizando ela...
+	}
+}
+[/code]
+
+E, no método %%main%%, criamos os objetos e passamos para a classe %%Thread%%. O 
+método %%start%% é responsável por iniciar a execução da %%Thread%%:
+
+[code java]
+public class MeuPrograma {
+	public static void main (String[] args) {
+		
+		GeraPDF gerapdf = new GeraPDF();
+		Thread threadDoPdf = new Thread(gerapdf);
+		threadDoPdf.start();
+		
+		BarraDeProgresso barraDeProgresso = new BarraDeProgresso();
+		Thread threadDaBarra = new Thread(barraDeProgresso);
+		threadDaBarra.start();
+		
+	}
+}
+[/code]
+
+O código acima, porém, não compilará. Como a classe %%Thread%% sabe que deve chamar
+o método %%roda%%? Como ela sabe que nome de método daremos e que ela deve chamar
+esse método especial? Falta na verdade um **contrato** entre as nossas classes a 
+serem executadas e a classe %%Thread%%.
+
+[note]
+	Faça aqui uma conversa com os alunos e deixe que algum deles chegue a conclusão
+	que para amarrar a classe Thread a sua classe, uma interface deve ser usada.
+	Ai voce explica que ja existe a Runnable.
+[/note]
+
+Esse contrato existe e é feito pela ::interface:: %%Runnable%%: devemos dizer que
+nossa classe é "executável" e que segue esse contrato. Na interface %%Runnable%%,
+há apenas um método chamado %%run%%. Basta implementá-lo, "assinar" o contrato e
+a classe %%Thread%% já saberá executar nossa classe.
+
+[code java]
+public class GeraPDF implements Runnable {
+	public void run () {
+		// lógica para gerar o pdf...
+	}
+}
+
+public class BarraDeProgresso implements Runnable {
+	public void run () {
+		// mostra barra de progresso e vai atualizando ela...
+	}
+}
+[/code]
+
+A classe %%Thread%% recebe no construtor um objeto que **é um** %%Runnable%%, e
+seu método %%start%% chama o método %%run%% da nossa classe. Repare que a classe 
+%%Thread%% não sabe qual é o tipo específico da nossa classe; para ela, basta saber
+que a classe segue o contrato estabelecido e possui o método %%run%%. 
+
+É o bom uso de interfaces, contratos e polimorfismo na prática!
+
+[box Estendendo a classe Thread]
+A classe %%Thread%% implementa %%Runnable%%. Então, você pode criar uma subclasse
+dela e reescrever o %%run%% que, na classe %%Thread%%, não faz nada:
+
+[code java]
+public class GeraPDF extends Thread {
+	public void run () {
+		// ...
+	}
+}
+[/code]
+
+E, como nossa classe **é uma** %%Thread%%, podemos usar o %%start%% diretamente:
+ 
+[code java]
+GeraPDF gera = new GeraPDF();
+gera.start();
+[/code] 
+
+Apesar de ser um código mais simples, você está usando herança apenas por 
+"preguiça" (herdamos um monte de métodos mas usamos apenas o %%run%%), e não por
+polimorfismo, que seria a grande vantagem. Prefira implementar %%Runnable%% a 
+herdar de %%Thread%%.
+[/box]
+
+[box Dormindo]
+Para que a thread atual durma basta chamar o método a seguir, por exemplo, para
+dormir 3 segundos:
+
+[code java]Thread.sleep(3 * 1000);[/code]
+[/box]
+
+[section Escalonador e trocas de contexto]
+
+Veja a classe a seguir:
+
+[code java #]
+public class Programa implements Runnable {
+
+	private int id;		   
+	// colocar getter e setter pro atributo id
+
+	public void run () {
+		for (int i = 0; i < 10000; i++) {
+		    System.out.println("Programa " + id + " valor: " + i);
+		}
+	}
+}
+[/code]
+
+É uma classe que implementa %%Runnable%% e, no método %%run%%, apenas imprime 
+dez mil números. Vamos usá-las duas vezes para criar duas threads e imprimir os
+números duas vezes simultaneamente:
+
+[note]
+	É uma boa mostrar para os alunos como não se chama o método run diretamente,
+	senão seria sequencial. O start chama o run numa thread em paralelo.
+[/note]
+
+[code java #]
+public class Teste {
+	public static void main(String[] args) {
+		
+		Programa p1 = new Programa();	
+		p1.setId(1);
+
+		Thread t1 = new Thread(p1);
+		t1.start();
+		
+		Programa p2 = new Programa();	
+		p2.setId(2);
+
+		Thread t2 = new Thread(p2);
+		t2.start();				
+		 	
+	}
+}
+[/code]
+
+Se rodarmos esse programa, qual será a saída? De um a mil e depois de um a mil?
+Provavelmente não, senão seria sequencial. Ele imprimirá 0 de t1, 0 de t2, 1 de
+t1, 1 de t2, 2 de t1, 2 de t2 e etc? Exatamente intercalado?
+
+Na verdade, não sabemos exatamente qual é a saída. Rode o programa várias vezes
+e observe: em cada execução a saída é um pouco diferente.
+
+O problema é que no computador existe apenas um processador capaz de executar 
+coisas. E quando queremos executar várias coisas ao mesmo tempo, e o processador
+só consegue fazer uma coisa de cada vez? Entra em cena o **escalonador de threads**.
+
+O escalonador (**scheduler**), sabendo que apenas uma coisa pode ser executada de
+cada vez, pega todas as threads que precisam ser executadas e faz o processador
+ficar alternando a execução de cada uma delas. A idéia é executar um pouco de cada
+thread e fazer essa troca tão rapidamente que a impressão que fica é que as coisas
+estão sendo feitas ao mesmo tempo.
+
+O escalonador é responsável por escolher qual a próxima thread a ser executada e fazer a **troca de contexto**
+(context switch). Ele primeiro salva o estado da execução da thread atual para depois poder retomar a execução da
+mesma. Aí ele restaura o estado da thread que vai ser executada e faz o processador continuar a execução desta.
+Depois de um certo tempo, esta thread é tirada do processador, seu estado (o contexto) é salvo e outra thread
+é colocada em execução. A ::troca de contexto:: é justamente as operações de salvar o contexto da thread atual
+e restaurar o da thread que vai ser executada em seguida.
+
+Quando fazer a troca de contexto, por quanto tempo a  thread vai rodar e qual vai ser a próxima thread a ser
+executada, são escolhas do escalonador. Nós não controlamos essas escolhas (embora possamos dar "dicas" ao
+escalonador). Por isso que nunca sabemos ao certo a ordem em que programas paralelos são executados.
+
+Você pode pensar que é ruim não saber a ordem. Mas perceba que se a ordem importa para você, se é importante
+que determinada coisa seja feita antes de outra, então não estamos falando de execuções paralelas, mas sim
+de um programa sequencial normal (onde uma coisa é feita depois da outra, em uma sequência).
+
+Todo esse processo é feito automaticamente pelo escalonador do Java (e, mais amplamente, pelo escalonador do
+sistema operacional). Para nós, programadores das threads, é como se as coisas estivessem sendo executadas
+ao mesmo tempo.
+
+[box E em mais de um processador?]
+A VM do Java e a maioria dos SOs modernos consegue fazer proveito de sistemas com vários processadores ou 
+multi-core. A diferença é que agora temos mais de um processador executando coisas e teremos, sim, execuções
+verdadeiramente paralelas.
+
+Mas o número de processos no SO e o número de Threads paralelas costumam ser tão grandes que, mesmo com vários
+processadores, temos as trocas de contexto. A diferença é que o escalonador tem dois ou mais processadores para
+executar suas threads. Mas dificilmente terá uma máquina com mais processadores que threads paralelas executando.
+[/box]
+
+[section Garbage Collector]
+
+[index Garbage Collector]
+O **Garbage Collector** (coletor de lixo, lixeiro) funciona como uma %%Thread%% responsável
+por jogar fora todos os objetos que não estão sendo referenciados por nenhum 
+outro objeto - seja de maneira direta ou indireta.
+
+Considere o código:
+
+[code java]
+	Conta conta1 = new ContaCorrente();
+	Conta conta2 = new ContaCorrente();
+[/code]
+
+Até este momento, sabemos que temos 2 objetos em memória. Aqui, o ::Garbage Collector:: não pode eliminar 
+nenhum dos objetos, pois ainda tem alguém se referindo a eles de alguma forma.
+
+Podemos, então, executar uma linha que nos faça perder a referência para um dos dois objetos criados, 
+como, por exemplo, o seguinte código:
+
+[code java]
+	conta2 = conta1;
+[/code]
+
+Quantos objetos temos em memória? 
+
+Perdemos a referência para um dos objetos que foram criados. Esse objeto já não é mais acessível. 
+Temos, então, apenas um objeto em memória? Não podemos afirmar isso! Como o ::Garbage Collector:: 
+é uma Thread, você não tem garantia de quando ele 
+vai rodar. Você só sabe que, em algum momento no futuro, aquela memória vai ser liberada.
+
+Algumas pessoas costumam atribuir %%null%% a uma variável, com o intuito de acelerar a passagem do 
+::Garbage Collector:: por aquele objeto:
+
+[code java]
+	for (int i = 0; i < 100; i++) {
+		List x = new ArrayList();
+		// faz algumas coisas com a arraylist
+		x = null;
+	}
+[/code]
+
+Isso rarissimamente é necessário. O ::Garbage Collector:: age apenas sobre objetos, nunca sobre variáveis. 
+Nesse caso, a variável %%x%% não existirá mais a cada iteração, deixando a %%ArrayList%% criada sem nenhuma 
+referência para ela.
+
+[note]
+Em alguns casos particulares, é interessante atribuir %%null%%, por exemplo, quando você tem uma 
+referência que é um atributo e já não vai mais usar aquele objeto.
+
+Ou ainda no caso de voce alocar um objeto muito grande e nao precisar mais dele, mas logo em
+seguida, no mesmo metodo, voce faz um wiat() ou algo que demore muito. Como a stack so vai
+limpar as variaveis locais no fim do metodo, o GC vai achar que aquele objeto grande ainda pode estar
+em uso. Isso é apenas por curiosidade, obviamente nao faz sentido entrar nessa profundidade.
+Mais aqui:
+
+http://www.javaspecialists.eu/archive/Issue173.html
+http://www.javaspecialists.eu/archive/Issue174.html
+[/note]
+
+[box System.gc()]
+	[index java.lang.System.gc]
+	Você nunca consegue forçar o Garbage Collector, mas chamando o método estático %%gc%% da classe 
+	%%System%%, você está sugerindo que a Virtual Machine rode o Garbage Collector naquele momento. 
+	Se sua sugestão vai ser aceita ou não, isto depende de JVM para JVM, e você não tem garantias. 
+	Evite o uso deste método. Você não deve basear sua aplicação em quando o Garbage Collector vai 
+	rodar ou não.
+[/box]
+
+[box Finalizer]
+	[index java.lang.Object.finalize]
+	[index finalizer]
+	A classe %%Object%% define também um método %%finalize%%, que você pode reescrever. Esse método 
+	será chamado no instante antes do Garbage Collector coletar este objeto. Não é um destrutor, 
+	você não sabe em que momento ele será chamado. Algumas pessoas o utilizam para liberar recursos 
+	"caros" como conexões, threads e recursos nativos. Isso deve ser utilizado apenas por segurança: 
+	o ideal é liberar esses recursos o mais rápido possível, sem depender da passagem do Garbage 
+	Collector. 
+[/box]
+
+[section Para saber mais: problemas com concorrência]
+
+[note]
+A apostila usa o exemplo com invocacoes concorrentes a %%atualiza%% e %%deposita%%,
+mas fica mais facil, e mais engracado, fazendo com %%saca%% e %%deposita%%, com
+%%saca%% sendo parado logo no meio: o efeito é de que o saque é esquecido pelo banco (e
+proprios alunos fazem piadas).
+[/note]
+
+[TODO mudar para deposita e saca, em vez de deposita e atualiza]
+
+O uso de Threads começa a ficar interessante e complicado quando precisamos compartilhar objetos 
+entre várias Threads.
+
+Imagine a seguinte situação: temos um Banco com milhões de Contas Bancárias. Clientes sacam e 
+depositam dinheiro continuamente, 24 horas por dia. No primeiro dia de cada mês, o Banco precisa 
+atualizar o saldo de todas as Contas de acordo com uma taxa específica. Para isso, ele utiliza o 
+%%AtualizadorDeContas%% que vimos anteriormente.
+
+O %%AtualizadorDeContas%%, basicamente, pega uma a uma cada uma das milhões de contas e chama seu 
+método %%atualiza%%. A atualização de milhões de contas é um processo demorado, que dura horas; é 
+inviável parar o banco por tanto tempo até que as atualizações tenham completado. É preciso executar 
+as atualizações paralelamente às atividades, de depósitos e saques, normais do banco.
+
+Ou seja, teremos várias threads rodando paralelamente. Em uma thread, pegamos todas as contas e 
+vamos chamando o método %%atualiza%% de cada uma. Em outra, podemos estar sacando ou depositando 
+dinheiro. Estamos compartilhando objetos entre múltiplas threads (as contas, no nosso caso).
+
+Imagine a seguinte possibilidade (mesmo que muito remota): no exato instante em que o 
+atualizador está atualizando uma Conta X, o cliente dono desta Conta resolve efetuar um saque. Como 
+sabemos, ao trabalhar com Threads, o escalonador pode parar uma certa Thread a qualquer instante para 
+executar outra, e você não tem controle sobre isso.
+
+Veja essa classe Conta:
+
+[code java #]
+public class Conta {		
+	
+	private double saldo;
+		
+		// outros metodos e atributos...
+		
+		public void atualiza(double taxa) {
+			double saldoAtualizado = this.saldo * (1 + taxa);
+			this.saldo = saldoAtualizado;
+		}
+
+		public void deposita(double valor) {
+			double novoSaldo = this.saldo + valor;
+			this.saldo = novoSaldo;
+		}
+}
+[/code]
+
+Imagine uma Conta com saldo de 100 reais. Um cliente entra na agência e faz um depósito de 1000 
+reais. Isso dispara uma Thread no banco que chama o método %%deposita()%%; ele começa calculando o 
+%%novoSaldo%% que passa a ser 1100 (linha 13). Só que por algum motivo que desconhecemos, o 
+escalonador pára essa thread.
+
+Neste exato instante, ele começa a executar uma outra Thread que chama o método %%atualiza%% da mesma 
+%%Conta%%, por exemplo, com taxa de 1%. Isso quer dizer que o %%novoSaldo%% passa a valer 101 reais 
+(linha 8). E, nesse instante o escalonador troca de Threads novamente. Ele executa a linha 14 
+na Thread que fazia o depósito; o saldo passa a valer 1100. Acabando o deposita, o escalonador volta 
+pra Thread do atualiza e executa a linha 9, fazendo o saldo valer 101 reais.
+
+Resultado: o depósito de mil reais foi totalmente ignorado e seu Cliente ficará pouco feliz com isso. 
+Perceba que não é possível detectar esse erro, já que todo o código foi executado perfeitamente, sem 
+problemas. **O problema, aqui, foi o acesso simultâneo de duas Threads ao mesmo objeto**.  
+
+E o erro só ocorreu porque o escalonador parou nossas Threads naqueles exatos lugares. Pode ser que 
+nosso código fique rodando 1 ano sem dar problema algum e em um belo dia o escalonador resolve 
+alternar nossas Threads daquela forma. Não sabemos como o escalonador se comporta! Temos que proteger 
+nosso código contra esse tipo de problema. Dizemos que essa classe não é ::thread safe::, isso é, não 
+está pronta para ter uma instância utilizada entre várias threads concorrentemente.
+
+O que queríamos era que não fosse possível alguém atualizar a %%Conta%% enquanto outra pessoa está 
+depositando um dinheiro. Queríamos que uma Thread não pudesse mexer em uma %%Conta%% enquanto outra 
+Thread está mexendo nela. Não há como impedir o escalonador de fazer tal escolha. Então, o que fazer?
+
+Uma ideia seria criar uma **trava** e, no momento em que uma Thread entrasse em um desses métodos, 
+ela trancaria a entrada com uma chave. Dessa maneira, mesmo que sendo colocada de lado, nenhuma outra 
+Thread poderia entrar nesses métodos, pois a chave estaria com a outra Thread.
+
+[index região crítica]
+Essa ideia é chamada de **região crítica**. É um pedaço de código que definimos como crítico e
+que não pode ser executado por duas threads ao mesmo tempo. Apenas uma thread por vez consegue entrar
+em alguma região crítica. 
+
+Podemos fazer isso em Java. Podemos usar qualquer objeto como um **lock** (trava, chave), para poder 
+**sincronizar** em cima desse objeto, isto é, se uma Thread entrar em um bloco que foi definido como 
+sincronizado por esse lock, apenas uma Thread poderá estar lá dentro ao mesmo tempo, pois a chave 
+estará com ela.
+
+A palavra chave %%synchronized%% dá essa característica a um bloco de código e recebe qual é o 
+objeto que será usado como chave. A chave só é devolvida no momento em que a Thread que tinha essa 
+chave sair do bloco, seja por %%return%% ou disparo de uma exceção (ou ainda na utilização do método 
+%%wait()%%)..
+
+Queremos, então, bloquear o acesso simultâneo a uma mesma %%Conta%%:
+
+[note]
+Na aula, voce pode chegar a nem comentar o syncrhonized, e so falar que com travas,
+que existem no java, voce pode resolver esse problema. Nao entre muito
+profundamente nesse assunto, e sempre ressalte que quem faz faculdade de ciencia
+da computacao leva 6 meses para entender esses conceitos, e que aqui estamos so
+pincelando.
+
+Vale notar que é importante eles aprenderem isso em especial para quando forem
+trabalhar com web: requests simultaneos na mesma servlet.
+[/note]
+
+[code java]
+public class Conta {
+		
+	private double saldo;
+	
+	// outros metodos e atributos...
+		
+	public void atualiza(double taxa) {
+		synchronized (this) {
+			double saldoAtualizado = this.saldo * (1 + taxa);
+			this.saldo = saldoAtualizado;			
+		}
+	}
+		
+	public void deposita(double valor) {
+		synchronized (this) {
+			double novoSaldo = this.saldo + valor;
+			this.saldo = novoSaldo;			
+		}
+	}
+}
+[/code]
+
+Observe o uso dos blocos %%synchronized%% dentro dos dois métodos. Eles bloqueiam uma Thread 
+utilizando o mesmo objeto %%Conta%%, o %%this%%.
+
+[index atomicidade]
+Esses métodos são mutuamente exclusivos e só executam de maneira atômica. Threads que tentam 
+pegar um lock que já está pego, ficarão em um conjunto especial esperando pela liberação do lock
+(não necessariamente numa fila).
+
+[box Sincronizando o bloco inteiro]
+É comum sempre sincronizarmos um método inteiro, normalmente utilizando o %%this%%.
+
+[code java]
+public void metodo() {
+	synchronized (this) {
+		// conteudo do metodo
+	}
+}
+[/code]
+
+Para este mesmo efeito, existe uma sintaxe mais simples, onde o %%synchronized%% pode ser usado como 
+modificador do método:
+
+[code java]
+public synchronized void metodo() {
+	// conteudo do metodo
+}
+[/code]
+[/box]
+
+[box Mais sobre locks, monitores e concorrência]
+Se o método for estático, será sincronizado usando o lock do objeto que representa a classe 
+(%%NomeDaClasse.class%%).
+
+Além disso, o pacote %%java.util.concurrent%%, conhecido como **JUC**, entrou no Java 5.0 para 
+facilitar uma série de trabalhos comuns que costumam aparecer em uma aplicação concorrente.
+
+Esse pacote ajuda até mesmo criar threads e pool de threads, através dos Executors.
+[index java.util.concurrent]
+[index juc]
+[/box]
+
+[section Para saber mais: Vector e Hashtable]
+Duas collections muito famosas são %%Vector%% e %%Hashtable%%, a diferença delas com suas irmãs %%ArrayList%% 
+e %%HashMap%% é que as primeiras são thread safe.
+
+Você pode se perguntar porque não usamos sempre essas classes thread safe. Adquirir um lock tem 
+um custo, e caso um objeto não vá ser usado entre diferentes threads, não há porque usar essas classes 
+que consomem mais recursos. Mas nem sempre é fácil enxergar se devemos sincronizar um bloco, ou se 
+devemos utilizar blocos sincronizados.
+
+Antigamente o custo de se usar locks era altíssimo, hoje em dia isso custa pouco para a JVM, mas 
+não é motivo para você sincronizar tudo sem necessidade.
+
+[section Um pouco mais...]
+
+[list number]
+* Você pode mudar a prioridade de cada uma de suas Threads, mas isto também é apenas uma sugestão ao escalonador.
+
+* Existe um método %%stop%% nas Threads, porque não é boa prática chamá-lo?
+
+* Um tópico mais avançado é a utilização de %%wait%%, %%notifiy%% e %%notifyAll%% para que as Threads comuniquem-se 
+de eventos ocorridos, indicando que podem ou não podem avançar de acordo com condições
+
+* O pacote %%java.util.concurrent%% foi adicionado no Java 5 para facilitar o trabalho na programação
+concorrente. Ele possui uma série de primitivas para que você não tenha de trabalhar diretamente
+com %%wait%% e %%notify%%, além de ter diversas coleções thread safe.
+[/list]
+
+[section Exercícios]
+
+[exercise]
+	[question]
+		Teste o exemplo deste capítulo para imprimir números em paralelo. 
+		
+		Escreva a classe Programa:
+[code java #]
+public class Programa implements Runnable {
+
+	private int id;		   
+	// colocar getter e setter pro atributo id
+
+	public void run () {
+		for (int i = 0; i < 10000; i++) {
+		    System.out.println("Programa " + id + " valor: " + i);
+		}
+	}
+}
+[/code]
+
+		Escreva a classe de Teste: 
+[code java #]
+public class Teste {
+	public static void main(String[] args) {
+		
+		Programa p1 = new Programa();	
+		p1.setId(1);
+
+		Thread t1 = new Thread(p1);
+		t1.start();
+		
+		Programa p2 = new Programa();	
+		p2.setId(2);
+
+		Thread t2 = new Thread(p2);
+		t2.start();				
+		 	
+	}
+}
+[/code]
+
+		Rode várias vezes a classe %%Teste%% e observe os diferentes resultados em cada execução.
+	[/question]
+[/exercise]
+
+[section Exercícios avançados de programação concorrente e locks]
+
+Exercícios só recomendados se você já tinha algum conhecimento prévio de programação
+concorrente, locks, etc.
+
+[exercise]
+	[question]
+	
+		Vamos enxergar o problema ao se usar uma classe que não é thread safe:
+		a %%LinkedList%% por exemplo.
+		
+		Imagine que temos um objeto que guarda todas as %%SQL%%s que uma aplicação
+		precisa executar. Vamos usar uma %%LinkedList<String>%% para armazená-los.
+		Nossa aplicação é multi thread, então diferentes threads vão inserir diferentes
+		SQLs para serem executados. Não importa a ordem que elas sejam executadas,
+		desde que elas um dia sejam!
+		
+		Vamos usar a seguinte classe para adicionar as queries:
+		
+[code java]
+public class ProduzSQL implements Runnable{
+	private int comeco;
+	private int fim;
+	private Collection<String> sqls;
+	
+	public ProduzSQL(int comeco, int fim, Collection<String> sqls) {
+		this.comeco = comeco;
+		this.fim = fim;
+		this.sqls = sqls;
+	}
+
+	public void run() {
+		for (int i = comeco; i < fim; i++) {
+			sqls.add("SQL"+i);
+		}		
+	}	
+}
+[/code]
+
+		Vamos criar três threads que rodem esse código, todas adicionando
+		SQLs no **mesmo** %%HashSet%%. Em outras palavras, teremos
+		threads compartilhando e acessando um mesmo objeto: é aqui que mora o perigo.
+
+[code java]
+public class BancoDeDados {
+	public static void main(String[] args) throws InterruptedException {
+		Collection<String> sqls = new HashSet<String>();
+
+		ProduzSQL p1 = new ProduzSQL(0, 10000, sqls);
+		Thread t1 = new Thread(p1);
+
+		ProduzSQL p2 = new ProduzSQL(10000, 20000, sqls);
+		Thread t2 = new Thread(p2);
+
+		ProduzSQL p3 = new ProduzSQL(20000, 30000, sqls);
+		Thread t3 = new Thread(p3);
+		
+		t1.start();
+		t2.start();
+		t3.start();
+
+		// faz com que nós (nós = thread que roda o main)
+		// aguardemos o fim dessas três threads
+		t1.join();
+		t2.join();
+		t3.join();
+
+		System.out.println("Threads produtoras de SQLs finalizadas!");
+		
+		// verifica se todas as SQLs foram executadas 		
+		for (int i = 0; i < 15000; i++) {			
+			if (!sqls.contains("SQL" + i)) {
+				throw new IllegalStateException("não encontrei a SQL" + i);
+			}
+		}
+		
+		// verifica se null nao se encontra!
+		if (sqls.contains(null)) {
+				throw new IllegalStateException("não devia ter null aqui dentro! nao inserimos null");
+		}
+		
+		System.out.println("Fim da execucao com sucesso");
+	}
+}
+[/code]
+		
+		[note]
+		Legal que as vezes  executa perfeitamente!
+		Se estiver dificil de explicar o join, faca um Thread.sleep de 10 segundos.
+		Se nao estiver dando pau, aumente o numero de
+		SQLs ou melhor: aumente numero de threads (umas 5 fica facil de dar erro o tempo todo).
+		[/note]
+
+	[/question]
+
+	[question]		
+		Teste o código anterior, mas usando %%synchronized%% ao adicionar na coleção:
+		
+		[code java]
+	public void run() {
+		for (int i = comeco; i < fim; i++) {
+			synchronized(sqls) {
+				sqls.add("SQL"+i);
+			}
+		}		
+	}	
+		[/code]
+		
+		[note]
+		Parece-me que da para perceber que com o syncrhonized vai um pouco mais lento
+		de quando esta sem, usa LinkedList, e por sorte da certo! O que so da
+		pra sentir se o bloco synchronized for realmente muito curto.
+		[/note]
+
+	[/question]
+	
+	[question]		
+		Sem usar o %%synchronized%% teste com a classe %%Vector%% (que é uma %%Collection%%).
+	[/question]
+	
+	[question]		
+		Novamente sem usar o %%synchronized%%, teste usar %%HashSet%% e %%ArrayList%%,
+		em vez de %%Vector%%. Faça vários testes, pois as threads vão se entrelaçar
+		cada vez de uma maneira diferente, podendo ou não ter um efeito inesperado.
+
+	[note]
+		Atencao! Usar ArrayList aqui em vez de LinkedList pode fazer
+		o programa dar  ArrayIndexOutOfBoundsException! Isso ocorre porque,
+		dentro do metodo add, ele chama o ensureCapacity. Mas pode ocorrer
+		de muitas threads pararem bem depois do ensureCapacity, e na verdade
+		nao tinha capacidade de adicionar tantos ao mesmo tempo!!
+		
+		Exemplo: tem 999 objetos e a capacidade é 1000. 3 threads entram pra
+		adicionar cada uma um objeto. Cada uma executa o ensureCapacity, ve
+		que ta tudo ok (afinal 999 < 1000), e prossegue sem aumentar a array
+		do %%elementData%%. Mas ai quando cada thread vai prosseguir, a primeira
+		consegue colocar o elemento, fazendo %%elementData[size++] = e;%%.
+		Ja a segunda, que passou "desapercebida" pelo ensureCapacity, vai dar
+		pau porque %%size%% ja estara valendo %%length%% do %%elementData%%!
+		
+		Pro pessoal avancado, da ate para explicar isso!		
+		
+		Pra dar o efeito sem a exception, de new ArrayList(30000), assim
+		ele ja tera espaco para 10000. Ai, em vez de dar exception,
+		 ele vai engoli alguns objetos, porque
+		essa linha da ArrayList podera ser interrompida "no meio": 
+		%%elementData[size++] = e;%%
+				
+		Com HashSet os resultados sao BIZONHOS! As vezes da um laco infinito,
+		as vezes ele ja nao encontra a SQL0. Divertido! LinkedList o erro mais comum
+		eh laco infinito.
+	[/note]
+	[/question]
+
+
+[/exercise]
+
+No capítulo de Sockets usaremos threads para solucionar um problema real de execuções paralelas.

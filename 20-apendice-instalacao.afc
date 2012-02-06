@@ -1,0 +1,119 @@
+[chapter Apêndice - Instalação do Java]
+[quote "Quem pouco pensa, engana-se muito." -- Leonardo da Vinci]
+
+Instalação do Java Development Kit em ambiente Windows e Linux.
+
+[section Escolhendo a VM]
+Como vimos antes, a VM é apenas uma especificação e devemos baixar uma implementação.
+Há muitas empresas que implementam uma VM, como a própria Sun/Oracle, a IBM, a Apache e outros.
+
+A da Sun/Oracle é a mais usada e possui versões para Windows, Linux e Solaris. Você pode
+baixar o SDK acessando:
+
+http://java.sun.com/
+
+Nesta nova página da Oracle, você deve escolher o Java SE, dentro dos top downloads. Depois, escolha
+o JDK e seu sistema operacional.
+
+[section Instalando no Ubuntu e outros Linux]
+Cada distribuição Linux tem sua própria forma de instalação. Algumas já trazem o Java
+junto, outras possibilitam que você instale pelos repositórios oficiais e em alguns
+casos você precisa baixar direto da Sun e configurar tudo manualmente.
+
+No Ubuntu, a distribuição usada na Caelum e a mais usada no mundo, a instalação é
+bastante simples. Basta ir no terminal e digitar:
+
+
+[code]
+	sudo add-apt-repository "deb http://archive.canonical.com/ lucid partner"
+	sudo apt-get update
+	sudo apt-get install sun-java6-jdk
+	sudo update-alternatives --config java
+[/code]
+
+Há ainda outros pacotes disponíveis para o plugin no navegador (sun-java6-plugin), 
+a documentação (sun-java6-doc), o código fonte (sun-java6-source) ou apenas o jre
+(sun-java6-jre).
+
+Se você usa outra distribuição que não o Ubuntu, consulte a documentação da mesma
+para saber como instalar o Java.
+
+[section No Mac OS X e Solaris]
+O Mac OS X já traz o Java instalado junto com o sistema operacional. É uma VM desenvolvida
+pela própria Apple e baseada no código da Sun. Atualizações para a VM devem ser obtidas no
+site da Apple em:
+
+http://developer.apple.com/java/
+
+O Solaris, por ser da própria Sun, também traz o Java instalado já de fábrica. É a própria
+VM da empresa, que pode ser baixada também no site oficial:
+
+http://java.sun.com/javase/downloads/
+
+[section Instalação do JDK em ambiente Windows]
+Para instalar o JDK no Windows, primeiro baixe-o no site da Sun. É um simples 
+arquivo executável que contém o Wizard de instalação.
+
+[title Instalação]
+[list number]
+	* Dê um clique duplo no arquivo "jdk-<versão>-windows-i586-p.exe" e espere até ele entrar no 
+	wizard de instalação.
+		[img images/instalacao/icon.png w=15%]
+	
+	* Nesta tela, aceite o contrato da Sun/Oracle, clicando em ::Accept:::
+		[img images/instalacao/license.png w=60%]
+	
+	* Selecione quais recursos instalaremos junto com o Java (ferramentas de 
+	desenvolvimento, demonstrações, o código fonte e o próprio java) e onde ele será instalado 
+	(guarde esse caminho porque usaremos ele mais pra frente). Deixe como está e clique em "Next".
+		[img images/instalacao/install-options.png w=60%]
+	
+	* Pronto, ele instalará o JDK, apenas aguarde.
+	
+	* Ele começará a instalar o JRE (Java Runtime Environment), se você já não tiver instalado. 
+	Assim como o JDK, ele também tem algumas opções. Deixe como está e clique em "Next".
+		[img images/instalacao/jre.png w=60%]
+		
+	* Aguarde até o fim da instalação e clique em Finish.
+[/list]
+
+[title Configurando]
+Precisamos configurar algumas variáveis de ambiente após a instalação.
+
+[list number]
+	* Clique com o botão direito em cima do ícone "Meu Computador" e selecione a opção "Propriedades".
+		[img images/instalacao/mycomputer.png w=33%]
+	
+	* Escolha a aba "Avançado" e depois clique no botão "Variáveis de Ambiente"
+		[img images/instalacao/variables.png w=60%]
+		
+	* Nesta tela, você verá, na parte de cima, as variáveis de ambiente do usuário corrente e, 
+	embaixo, as variáveis de ambiente do computador (servem para todos os usuários). Clique no botão 
+	"Nova" da parte de baixo
+		[img images/instalacao/new.png w=52%]
+	
+	* Em "Nome da Variável" digite %%JAVA_HOME%% e, em valor da variável, digite o caminho que você 
+	anotou na instalação do Java. Provavelmente, será algo como: %%C:\Arquivos de programas\Java\jdk1.6.0_03%% 
+		[img images/instalacao/newvariable.png w=50%]
+
+	E, depois, clique em OK.
+	
+	* Crie uma nova variável de ambiente repetindo o passo 11, porém defina o nome da 
+	variável como %%CLASSPATH%% e o valor com %%.%% (só um ponto).
+	
+	* Não vamos criar outra variável, mas sim ::alterar::. Para isso, procure a variável PATH, ou 
+	Path (dá no mesmo), e clique no botão de baixo "Editar".
+		[img images/instalacao/edit.png w=52%]
+	
+	* Não altere o nome da variável! Deixe como está e adicione no final do valor 
+	%%;%JAVA_HOME%\bin%%, não esqueça do ponto-e-vírgula - assim, você está adicionando mais um 
+	caminho à sua variável Path.
+		[img images/instalacao/editpath.png w=50%]
+		
+	* Abra o prompt. Vá em Iniciar, Executar e digite %%cmd%%.
+	
+	* No console, digite %%javac -version%%. O comando deve mostrar a versão do Java 
+	Compiler e algumas opções. Caso isso não aconteça, reveja os passos e confira se não esqueceu ou 
+	pulou nenhum deles.
+		[img images/instalacao/javac.png w=70%]		
+[/list]
