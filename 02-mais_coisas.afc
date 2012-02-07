@@ -1,0 +1,143 @@
+[chapter Mais detalhes da sintaxe do tubaina]
+
+[quote "Dá-se importância aos antepassados quando já não temos nenhum." 
+	-- François Chateaubriand]
+	
+[section Adicione citações]
+	É possível adicionar citações adicionando a Tag %%quote%% com o texto em seguida. No exemplo desse capítulo,
+	foi adicionado o seguinte conteúdo:
+	
+	[code]
+		[quote "Dá-se importância aos antepassados quando já não temos nenhum." 
+			-- François Chateaubriand]
+	[/code]
+	
+[section Trabalhando com itálico, negrito e código inline]
+	Quando quiser que um texto apareça em itálico, basta adicioná-lo entre %%::  ::%%, dessa forma, o texto ficará em ::itálico::.
+	
+	Para fazer com que um treco do texto fique em negrito, coloque-o entre %%** **%%, com isso, o texto ficará em **negrito**.
+	
+	Quando precisamos utilizar no meio de um texto algum conteúdo de código, sem gerar uma quebra de linha para isso, ou seja,
+	inline, podemos utilizar %% %% %% %%. Um exemplo é: %%<html></html>%%. Esse texto terá fonte monoespaçada.
+	
+[section Organize informações com listas]
+	Se deseja enumerar itens, pode-se utilizar uma lista numerada, através da Tag %%list%% com o atributo %%number%%. Cada item
+	da lista deve ser identificado com um * no início:
+	
+	[list number]
+		* Primeiro item;
+		* Segundo item;		
+		* Terceiro item;
+	[/list]
+	
+	Também é possível utilizar letras para ordenas (útil para criar sublistas):
+	
+	[list letter]
+		* Item A;
+		* Item B;
+		* Item C;
+	[/list]
+	
+	Caso não deseja uma lista ordenada, ou seja, sua lista terá apenas os bullets, omita o tipo da lista:
+	
+	[list]
+		* Bullet 1
+		* Bullet 2
+		* Bullet 3
+	[/list]
+	
+	Nos casos anteriores, tivemos o seguinte código:
+	
+	[code]
+		[list number]
+			* Primeiro item;
+			* Segundo item;		
+			* Terceiro item;
+		[/list]
+		
+		[list letter]
+			* Item A;
+			* Item B;
+			* Item C;
+		[/list]
+		
+		[list]
+			* Bullet 1
+			* Bullet 2
+			* Bullet 3
+		[/list]
+	[/code]
+	
+[section]
+	É possível escrever código em diversas linguagens e fazer com que eles tenham syntax highlight adequado. Para isso,
+	basta usar a Tag %%code%% especificando uma linguagem.
+	
+	Exemplo:
+	
+	[code]
+		[code java]
+			System.out.println("oi");
+		[/code]
+	[/code]
+	
+	E isso gerará o seguinte conteúdo:
+	
+	[code java]
+		System.out.println("oi");
+	[/code]
+	
+	Para a identação do código será utilizada a mesma que for colocada dentro da Tag %%code%%.
+	
+	Caso seja necessário identificar o número da linha, é possível adicioná-las colocando uma # na Tag %%code%%:
+	
+	[code]
+		[code java #]
+			System.out.println("linha 1");
+			System.out.println("linha 2");
+			System.out.println("linha 3");
+		[/code]
+	[/code]
+
+	Que gera:
+	
+		[code java #]
+			System.out.println("linha 1");
+			System.out.println("linha 2");
+			System.out.println("linha 3");
+		[/code]
+
+	Também é possível destacar linhas do código, utilizando o atributo %%h%% na Tag %%code%%:
+	[code]
+		[code java # h=2]
+			System.out.println("linha 1");
+			System.out.println("linha 2");
+			System.out.println("linha 3");
+		[/code]
+	[/code]
+	
+	Que gerará:
+	
+	[code java # h=2]
+		System.out.println("linha 1");
+		System.out.println("linha 2");
+		System.out.println("linha 3");
+	[/code]
+	
+	As linguagens disponível são:
+	[list]
+		* java
+		* html
+		* javascript
+		* ruby
+		* python
+		* c#
+	[/list]
+	Caso precise de uma nova linguagem que não esteja disponível ainda, contate os editores.
+	
+	Se necessário, é possível utilizar um trecho de código sem formatação alguma. Para isso, basta omitir a
+	linguagem.
+	
+	Você pode utilizar a Tag code dentro de qualquer lugar, como por exemplo, um Box, ou uma lista.
+	
+	**Cuidado pois existe um limite de caracteres em uma linha para o código do livro. O autor deve quebrar o código onde
+	achar mais conveniente. Caso o limite de caracteres seja estourado, o build falhará.**

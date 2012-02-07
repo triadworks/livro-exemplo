@@ -14,8 +14,26 @@
 	
 	[code]
 		[section Criação de seções]
+			Em seguida vai o conteúdo da seção...
 	[/code]
 	
+[section Quebras de linha e de página]
+	As quebras de linha devem ser especificadas no arquivo .afc com duas quebras (ou seja, dois enter). Uma só quebra é desconsiderada,
+	pois admite-se que é apenas para organização do arquivo fonte. Portanto, sempre que quiser um novo parágrafo (como o abaixo), 
+	utilize duas quebras de linha.
+	
+	As quebras de página são feitas automaticamente no build do livro. 
+
+[section Títulos]
+	Para criar título para um assunto dentro de uma seção, pode-se utilizar a Tag %%title%% contendo o título que será utilizado.
+	
+	[title Conclusão e como usar]
+	Com isso, basta utilizar em algum lugar do seu arquivo .afc o seguinte conteúdo:
+	
+	[code]
+		[title Conclusão e como usar]
+	[/code]
+
 [section Definição de boxes]
 	Quando quiser detalhar algo que está no texto, sem perder a linearidade do mesmo, recomendamos o uso de um Box, onde é
 	possível adicionar algum conteúdo, como a seguir:
@@ -46,4 +64,32 @@
 		[index Índice]
 	[/code]
 	
-[TODO imagens, inlines, list, tabelas, codes, quote]
+[section Como colocar imagens]
+	Para adicionar imagens, basta utilizar a Tag %%img%% indicando qual o nome do arquivo que deseja importar. Lembre-se de que
+	o caminho do arquivo da imagem, deverá ser relativo ao diretório onde se encontra o arquivo %%.afc%%.
+	
+	Também é possível dizer a proporção que deve ser utilizada para a imagem através de uma porcentagem.
+	
+	Um exemplo de uso é:
+	
+	[code]
+		[img caminho/do/arquivo/de/imagens w=90%]
+	[/code]
+	
+	É recomendado também adicionar legenda nas fotos. Para isso, basta adicionar um texto entre aspas:
+	
+	[code]
+		[img caminho/do/arquivo/de/imagens w=90% "imagem com legenda"]
+	[/code]
+	
+[section Criação de To-Dos]
+	Você pode criar to-dos, que são lembretes de algo que você precisa fazer depois. Os textos marcados como To-Dos não
+	saem na impressão, é só são visualizadas no arquivo fonte .afc.
+	
+	Para adicionar um To-Do, utilize a Tag %%TODO%%:
+	
+	[code]
+		[TODO Algo que eu tenho que me lembrar de re-ler depois]
+	[/code]
+	
+	Esses To-Dos aparecem no build do livro, junto do pdf da versão buildada.
