@@ -1,0 +1,95 @@
+[chapter Como escrever livros com o Tubaina?]
+
+[section Criação de capítulos]
+	Todos os novos capítulos, devem ser identificados com a Tag [chapter]. Um arquivo pode ter vários chapters, mas para
+	efeito de organização, recomendamos que separe cada capítulo em um arquivo. No caso desse capítulo, utilizamos o seguinte:
+	
+	[code]
+		[section Como escrever livros com o Tubaina?]
+	[/code]
+
+[section Criação de seções]
+	As seções podem ser criadas a partir do uso da Tag %%[section]%%, contendo o nome da seção a frente. No caso dessa
+	seção, fica:
+	
+	[code]
+		[section Criação de seções]
+			Em seguida vai o conteúdo da seção...
+	[/code]
+	
+[section Quebras de linha e de página]
+	As quebras de linha devem ser especificadas no arquivo .afc com duas quebras (ou seja, dois enter). Uma só quebra é desconsiderada,
+	pois admite-se que é apenas para organização do arquivo fonte. Portanto, sempre que quiser um novo parágrafo (como o abaixo), 
+	utilize duas quebras de linha.
+	
+	As quebras de página são feitas automaticamente no build do livro. 
+
+[section Títulos]
+	Para criar título para um assunto dentro de uma seção, pode-se utilizar a Tag %%title%% contendo o título que será utilizado.
+	
+	[title Conclusão e como usar]
+	Com isso, basta utilizar em algum lugar do seu arquivo .afc o seguinte conteúdo:
+	
+	[code]
+		[title Conclusão e como usar]
+	[/code]
+
+[section Definição de boxes]
+	Quando quiser detalhar algo que está no texto, sem perder a linearidade do mesmo, recomendamos o uso de um Box, onde é
+	possível adicionar algum conteúdo, como a seguir:
+	
+	[box Linearidade do texto]
+		Ao apresentarmos uma ideia, devemos manter uma sequência lógica em nosso texto, evitando trocar de assunto durante
+		uma mesma frase. Para situações onde teríamos que fazer isso, podemos utilizar o box.
+	[/box]
+	
+	Criar um box é extremamente simples, bastando que definamos uma Tag %%[box]%% contendo um título e o conteúdo esteja
+	dentor da Tag. No caso do anterior, tivemos o seguinte:
+	
+	[code]
+		[box Linearidade do texto]
+			Ao apresentarmos uma ideia, devemos manter uma sequência lógica em nosso texto, evitando trocar de assunto durante
+			uma mesma frase. Para situações onde teríamos que fazer isso, podemos utilizar o box.
+		[/box]
+	[/code]
+	
+[section Índice remissivo]
+	O índice remissivo é criado a partir da definição do autor dos pontos de índice. Para isso, em qualquer lugar do texto, basta
+	utilizar a Tag %%[index]%% contendo o nome do índice. Automaticamente o número da página é descoberto e colocado no índice.
+	[index Índice]
+	
+	No caso dessa seção, foi definido um índice que pode ser visto no final do livro. Para isso, utilizamos o seguinte:
+	
+	[code]
+		[index Índice]
+	[/code]
+	
+[section Como colocar imagens]
+	Para adicionar imagens, basta utilizar a Tag %%img%% indicando qual o nome do arquivo que deseja importar. Lembre-se de que
+	o caminho do arquivo da imagem, deverá ser relativo ao diretório onde se encontra o arquivo %%.afc%%.
+	
+	Também é possível dizer a proporção que deve ser utilizada para a imagem através de uma porcentagem.
+	
+	Um exemplo de uso é:
+	
+	[code]
+		[img caminho/do/arquivo/de/imagens w=90%]
+	[/code]
+	
+	É recomendado também adicionar legenda nas fotos. Para isso, basta adicionar um texto entre aspas:
+	
+	[code]
+		[img caminho/do/arquivo/de/imagens w=90% "imagem com legenda"]
+	[/code]
+	
+[section Criação de To-Dos]
+	Você pode criar to-dos, que são lembretes de algo que você precisa fazer depois. Os textos marcados como To-Dos não
+	saem na impressão, é só são visualizadas no arquivo fonte .afc.
+	
+	Para adicionar um To-Do, utilize a Tag %%TODO%%:
+	
+	[code]
+		[TODO Algo que eu tenho que me lembrar de re-ler depois]
+	[/code]
+	
+	Esses To-Dos aparecem no build do livro, junto do pdf da versão buildada.
