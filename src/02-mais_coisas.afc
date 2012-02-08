@@ -123,15 +123,8 @@
 		System.out.println("linha 3");
 	[/code]
 	
-	As linguagens disponível são:
-	[list]
-		* java
-		* html
-		* javascript
-		* ruby
-		* python
-		* c#
-	[/list]
+	Para uma lista das linguagens disponíveis, veja: http://pygments.org/docs/lexers/
+	
 	Caso precise de uma nova linguagem que não esteja disponível ainda, contate os editores.
 	
 	Se necessário, é possível utilizar um trecho de código sem formatação alguma. Para isso, basta omitir a
