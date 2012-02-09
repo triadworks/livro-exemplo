@@ -39,17 +39,15 @@
 	possível adicionar algum conteúdo, como a seguir:
 	
 	[box Linearidade do texto]
-		Ao apresentarmos uma ideia, devemos manter uma sequência lógica em nosso texto, evitando trocar de assunto durante
-		uma mesma frase. Para situações onde teríamos que fazer isso, podemos utilizar o box.
+		Ao apresentarmos uma ideia, devemos manter uma sequência lógica em nosso texto...
 	[/box]
 	
-	Criar um box é extremamente simples, bastando que definamos uma Tag %%[box]%% contendo um título e o conteúdo esteja
+	Criar um box é extremamente simples, bastando que definamos uma Tag %%box%% contendo um título e o conteúdo esteja
 	dentor da Tag. No caso do anterior, tivemos o seguinte:
 	
 	[code]
 		[box Linearidade do texto]
-			Ao apresentarmos uma ideia, devemos manter uma sequência lógica em nosso texto, evitando trocar de assunto durante
-			uma mesma frase. Para situações onde teríamos que fazer isso, podemos utilizar o box.
+			Ao apresentarmos uma ideia, devemos manter uma sequência lógica em nosso texto...
 		[/box]
 	[/code]
 	
