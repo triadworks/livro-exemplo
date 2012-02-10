@@ -9,7 +9,7 @@
 	[/code]
 
 [section Criação de seções]
-	As seções podem ser criadas a partir do uso da Tag %%[section]%%, contendo o nome da seção a frente. No caso dessa
+	As seções podem ser criadas a partir do uso da Tag %%section%%, contendo o nome da seção a frente. No caso dessa
 	seção, fica:
 	
 	[code]
