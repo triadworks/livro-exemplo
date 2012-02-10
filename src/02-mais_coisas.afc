@@ -68,7 +68,7 @@
 		[/list]
 	[/code]
 	
-[section]
+[section Escrevendo códigos]
 	É possível escrever código em diversas linguagens e fazer com que eles tenham syntax highlight adequado. Para isso,
 	basta usar a Tag %%code%% especificando uma linguagem.
 	
