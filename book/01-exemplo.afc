@@ -1,8 +1,7 @@
 [chapter Como escrever livros com o Tubaina?]
 
 [section Criação de capítulos]
-	Todos os novos capítulos, devem ser identificados com a Tag [chapter]. Um arquivo pode ter vários chapters, mas para
-	efeito de organização, recomendamos que separe cada capítulo em um arquivo. No caso desse capítulo, utilizamos o seguinte:
+	Todos os novos capítulos, devem ser identificados com a Tag [chapter]. Um arquivo só pode ter um chapter. No caso desse capítulo, utilizamos o seguinte:
 	
 	[code]
 		[section Como escrever livros com o Tubaina?]
