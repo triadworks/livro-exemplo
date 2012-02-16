@@ -49,7 +49,6 @@ específicos, não há necessidade de ficar escrevendo o nome do livro/blog/site
 
 	Você pode se referenciar a dois itens dentro de uma mesma tag %%ref%%, separando por virgula (%%ref 
 getters-setters-paulo-silveira, lean-startup-ries %%), gerando [ref getters-setters-paulo-silveira, lean-startup-ries].
-		
 	
 [section Referenciando uma seção ou capítulo]
 
@@ -59,7 +58,7 @@ getters-setters-paulo-silveira, lean-startup-ries %%), gerando [ref getters-sett
  no capítulo X"? Seus problemas acabaram! Basta, dentro de uma seção ou capítulo, criar um label. Por exemplo:
 
 [code]
-	[label adicione-referencias]
+	[ label adicione-referencias ]
 [/code]
 
 	E agora, para se referenciar, basta fazer:
@@ -73,11 +72,3 @@ getters-setters-paulo-silveira, lean-startup-ries %%), gerando [ref getters-sett
 	
 	Há também como se referenciar a uma página, mas não utilizaremos esse recurso pois formatos como epub e mobi podem
 não trabalhar bem com a ideia de uma página (kindle, por exemplo).
-
-[section Índice remissivo]
-	
-	Em breve informações de como criar seu índice remissivo de palavras chaves!
-	
-[index palavras chaves|see{índice}]
-[index índice! criando remissivo]
-
