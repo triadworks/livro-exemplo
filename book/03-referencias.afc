@@ -34,7 +34,8 @@ você deve criar o livro ou site que quer se referenciar. Olhe esses dois exempl
 	Para se referenciar, basta fazer:
 	
 	[code]
-		... esses recursos são realmente fundamentais e transformaram a vida de muitas empresas [ref lean-startup-ries].
+		... esses recursos são realmente fundamentais e transformaram a vida 
+		de muitas empresas [ref lean-startup-ries].
 	[/code]
 	
 	Isso ficará assim: "__esses recursos são realmente fundamentais e transformaram a vida de muitas empresas [ref lean-startup-ries]__".
@@ -64,7 +65,8 @@ getters-setters-paulo-silveira, lean-startup-ries %%), gerando [ref getters-sett
 	E agora, para se referenciar, basta fazer:
 	
 [code]
-	Você gostou do capítulo [ref-label adicione-referencias]? Já aprendeu a escrever referência bibliográfica na seção [ref-label adicione-referencias]?
+	Você gostou do capítulo [ref-label adicione-referencias]? Já aprendeu 
+	a escrever referência bibliográfica na seção [ref-label adicione-referencias]?
 [/code]
 
 	Ele mesmo saberá se a referência é a um capítulo ou seção, dependendo de onde você criou o label (se for antes de qualquer seção, será usada a numeração de capítulo).
