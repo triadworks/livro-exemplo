@@ -1,0 +1,79 @@
+[chapter Usando referencias bibliograficas e para o proprio livro]
+
+[quote "Oh! Como era difícil trabalhar com editoras tradicionais." 
+	-- Paulo Silveira]
+	
+[section Adicione referências]
+
+	[label adicione-referencias]
+	[index índice!criando bibliografia]
+
+	
+	Fica fácil criar uma bibliografia sólida e consistente. Primeiramente, dentro do arquibo %%book.bib%%,
+	você deve criar o livro ou site que quer se referenciar. Olhe esses dois exemplos:
+	
+	[code]
+		@article{getters-setters-silveira,
+		  author = 	 {Paulo Silveira},
+		  title = 	 {Como não aprender orientação a objetos: getters e setters},
+		  year = 	 {2006},
+		  howpublished = {\url{http://www.iturls.com/english/expert/craig/craig1.pdf}}
+		}
+
+		@book{lean-startup-ries,
+		  author = 	 {Eric Ries},
+		  title = 	 {Lean Startup},
+		  year = 	 {2011},
+		  publisher = {Editora Convencional},
+		  howpublished = {\url{http://www.theleanstartup.com/book}}
+		}
+	[/code]
+	
+	Para se referenciar, basta fazer:
+	
+	[code]
+		... esses recursos são realmente fundamentais e transformaram a vida de muitas empresas [ref lean-startup-ries].
+	[/code]
+	
+	Isso ficará assim: "__esses recursos são realmente fundamentais e transformaram a vida de muitas empresas [ref lean-startup-ries]__".
+	
+	Verifique no fim desse PDF como a bibliografia aparecerá! Isso pode ser alterado, claro, para se utilizar iniciais
+dos autores em vez de números, aparecer primeiro ano e depois editora, etc.
+
+	Quando for uma primeira citação a um livro importante, pode ser interessante escrever o nome do livro: "__O termo
+lean startup foi cunhado por Eric Ries em seu livro seminal Lean Startup [ref lean-startup-ries]__.". A não ser em casos
+específicos, não há necessidade de ficar escrevendo o nome do livro/blog/site toda hora! Evite também utilizar a bibliografia como conteúdo na frase. Isso é, **evite**: "__ Os getters e setters são ruins, como visto em [ref getters-setters-paulo-silveira]__", prefira "__Os getters e setters já são considerados má prática por muitos desenvolvedores [getters-setters-paulo-silveira]__".
+
+	Você pode se referenciar a dois itens dentro de uma mesma tag %%ref%%, separando por virgula (%%ref 
+getters-setters-paulo-silveira, lean-startup-ries %%), gerando [ref getters-setters-paulo-silveira, lean-startup-ries].
+		
+	
+[section Referenciando uma seção ou capítulo]
+
+	Você gostou do capítulo [ref-label adicione-referencias]? Já aprendeu a escrever referência bibliográfica na seção [ref-label adicione-referencias]?
+	
+	Mas e se adicionarmos um capítulo ou seção nova, teremos o trabalho de procurar essa citações, tipo "como vimos
+ no capítulo X"? Seus problemas acabaram! Basta, dentro de uma seção ou capítulo, criar um label. Por exemplo:
+
+[code]
+	[label adicione-referencias]
+[/code]
+
+	E agora, para se referenciar, basta fazer:
+	
+[code]
+	Você gostou do capítulo [ref-label adicione-referencias]? Já aprendeu a escrever referência bibliográfica na seção [ref-label adicione-referencias]?
+[/code]
+
+	Ele mesmo saberá se a referência é a um capítulo ou seção, dependendo de onde você criou o label (se for antes de qualquer seção, será usada a numeração de capítulo).
+	
+	Há também como se referenciar a uma página, mas não utilizaremos esse recurso pois formatos como epub e mobi podem
+não trabalhar bem com a ideia de uma página (kindle, por exemplo).
+
+[section Índice remissivo]
+	
+	Em breve informações de como criar seu índice remissivo de palavras chaves!
+	
+[index palavras chaves|see{índice}]
+[index índice! criando remissivo]
+
