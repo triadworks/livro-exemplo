@@ -9,8 +9,10 @@
 	[index índice!criando bibliografia]
 
 	
-	Fica fácil criar uma bibliografia sólida e consistente. Primeiramente, dentro do arquibo %%book.bib%%,
-	você deve criar o livro ou site que quer se referenciar. Olhe esses dois exemplos:
+	Fica fácil criar uma bibliografia sólida e consistente. Aliás, é importante sempre citar outras fontes que
+sustentem suas afirmações, em especial opiniões. Se for algo muito polêmico, compensa também citar fontes que
+pensam diferentemente e deixar o olhar crítico do leitor agir. Primeiramente, dentro do arquivo %%book.bib%%,
+você deve criar o livro ou site que quer se referenciar. Olhe esses dois exemplos:
 	
 	[code]
 		@article{getters-setters-silveira,
