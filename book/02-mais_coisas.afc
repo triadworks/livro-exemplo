@@ -76,6 +76,7 @@
 	
 	[code]
 		[code java]
+			double variavel;
 			System.out.println("oi");
 		[/code]
 	[/code]
@@ -83,6 +84,7 @@
 	E isso gerará o seguinte conteúdo:
 	
 	[code java]
+		double variavel;
 		System.out.println("oi");
 	[/code]
 	
