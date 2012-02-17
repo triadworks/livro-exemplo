@@ -47,7 +47,7 @@ dos autores em vez de números, aparecer primeiro ano e depois editora, etc.
 
 	Quando for uma primeira citação a um livro importante, pode ser interessante escrever o nome do livro: "::O termo
 lean startup foi cunhado por Eric Ries em seu livro seminal Lean Startup [ref lean-startup-ries]::.". A não ser em casos
-específicos, não há necessidade de ficar escrevendo o nome do livro/blog/site toda hora! Evite também utilizar a bibliografia como conteúdo na frase. Isto é, **evite**: "::Os getters e setters são ruins, como visto em [ref getters-setters-silveira]::", prefira "::Os getters e setters já são considerados má prática por muitos desenvolvedores [getters-setters-silveira]::::".
+específicos, não há necessidade de ficar escrevendo o nome do livro/blog/site toda hora! Evite também utilizar a bibliografia como conteúdo na frase. Isto é, **evite**: "::Os getters e setters são ruins, como visto em [ref getters-setters-silveira]::", prefira "::Os getters e setters já são considerados má prática por muitos desenvolvedores [ref getters-setters-silveira]::::".
 
 	Você pode se referenciar a dois itens dentro de uma mesma tag %%ref%%, separando por virgula (%%ref 
 getters-setters-paulo-silveira, lean-startup-ries %%), gerando [ref getters-setters-paulo-silveira, lean-startup-ries].
