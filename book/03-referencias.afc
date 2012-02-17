@@ -47,14 +47,14 @@ dos autores em vez de números, aparecer primeiro ano e depois editora, etc.
 
 	Quando for uma primeira citação a um livro importante, pode ser interessante escrever o nome do livro: "::O termo
 lean startup foi cunhado por Eric Ries em seu livro seminal Lean Startup [ref lean-startup-ries]::.". A não ser em casos
-específicos, não há necessidade de ficar escrevendo o nome do livro/blog/site toda hora! Evite também utilizar a bibliografia como conteúdo na frase. Isso é, **evite**: "::Os getters e setters são ruins, como visto em [ref getters-setters-paulo-silveira]::", prefira "::Os getters e setters já são considerados má prática por muitos desenvolvedores [getters-setters-paulo-silveira]::::".
+específicos, não há necessidade de ficar escrevendo o nome do livro/blog/site toda hora! Evite também utilizar a bibliografia como conteúdo na frase. Isto é, **evite**: "::Os getters e setters são ruins, como visto em [ref getters-setters-silveira]::", prefira "::Os getters e setters já são considerados má prática por muitos desenvolvedores [getters-setters-silveira]::::".
 
 	Você pode se referenciar a dois itens dentro de uma mesma tag %%ref%%, separando por virgula (%%ref 
 getters-setters-paulo-silveira, lean-startup-ries %%), gerando [ref getters-setters-paulo-silveira, lean-startup-ries].
 	
 [section Referenciando uma seção ou capítulo]
 
-	Você gostou do capítulo [ref-label capitulo-referencias]? Já aprendeu a escrever referência bibliográfica na seção [ref-label adicione-referencias]?
+	Você gostou desse nosso capítulo de número [ref-label capitulo-referencias]? Já aprendeu a escrever referência bibliográfica na seção [ref-label adicione-referencias]?
 	
 	Mas e se adicionarmos um capítulo ou seção nova, teremos o trabalho de procurar essa citações, tipo "como vimos
  no capítulo X"? Seus problemas acabaram! Basta, dentro de uma seção ou capítulo, criar um label. Por exemplo:

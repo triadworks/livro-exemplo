@@ -13,7 +13,7 @@
 	[/code]
 	
 [section Trabalhando com itálico, negrito e código inline]
-	Quando quiser que um texto apareça em itálico, basta adicioná-lo entre \verbatim{::  ::}, dessa forma, o texto ficará em ::itálico::.
+	Quando quiser que um texto apareça em itálico, basta adicioná-lo entre \verb+:: ::+, dessa forma, o texto ficará em ::itálico::.
 	
 	Para fazer com que um treco do texto fique em negrito, coloque-o entre %%** **%%, com isso, o texto ficará em **negrito**.
 	
