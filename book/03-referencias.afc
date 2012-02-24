@@ -55,7 +55,7 @@ getters-setters-silveira, lean-startup-ries %%), gerando [ref getters-setters-pa
 [section Referenciando uma seção ou capítulo]
 
 	Você gostou desse nosso capítulo de número [ref-label capitulo-referencias]? Já aprendeu a escrever referência bibliográfica na seção [ref-label adicione-referencias]?
-	
+
 	Mas e se adicionarmos um capítulo ou seção nova, teremos o trabalho de procurar essa citações, tipo "como vimos
  no capítulo X"? Seus problemas acabaram! Basta, dentro de uma seção ou capítulo, criar um label. Por exemplo:
 
@@ -74,3 +74,17 @@ getters-setters-silveira, lean-startup-ries %%), gerando [ref getters-setters-pa
 	
 	Há também como se referenciar a uma página, mas não utilizaremos esse recurso pois formatos como epub e mobi podem
 não trabalhar bem com a ideia de uma página (kindle, por exemplo).
+
+[section Referenciando uma imagem]
+  Para referenciar uma imagem você deve definir um label para a imagem na tag %%img%%. Depois, para referenciar a imagem no texto, use a tag %%ref-label%%, como no seguinte exemplo:
+  
+  [code]
+    [img resources/candle.jpg w=50 "imagem de um candlestick" label=candlestick]
+    A imagem [ref-label candlestick] exibe um candlestick.
+  [/code]
+  
+  Que resulta na seguinte imagem, seguida pelo texto:
+  
+  [img resources/candle.jpg w=50 "imagem de um candlestick" label=candlestick]
+  A imagem [ref-label candlestick] exibe um candlestick.
+  

@@ -57,7 +57,6 @@
 	
 	No caso dessa seção, foi definido um índice que pode ser visto no final do livro. Para isso, utilizamos o seguinte:
 	
-	[img resources/candle.jpg w=50 "imagem de um candlestick" label=lala]
 	
 	[code]
 		[index Índice]
@@ -80,8 +79,6 @@
 	[code]
 		[img caminho/do/arquivo/de/imagens w=90% "imagem com legenda"]
 	[/code]
-	
-	A imagem [ref-label lala] permite visualizar um candlestick.
 
 [section Criação de To-Dos]
 	Você pode criar to-dos, que são lembretes de algo que você precisa fazer depois. Os textos marcados como To-Dos não
