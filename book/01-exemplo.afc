@@ -4,7 +4,7 @@
 	Todos os novos capítulos, devem ser identificados com a Tag [chapter]. Um arquivo só pode ter um chapter. No caso desse capítulo, utilizamos o seguinte:
 	
 	[code]
-		[section Como escrever livros com o Tubaina?]
+		[chapter Como escrever livros com o Tubaina?]
 	[/code]
 
 [section Criação de seções]
