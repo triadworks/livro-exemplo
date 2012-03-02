@@ -13,12 +13,12 @@
 	[/code]
 	
 [section Trabalhando com itálico, negrito e código inline]
-	Quando quiser que um texto apareça em itálico, basta adicioná-lo entre \verb+:: ::+, dessa forma, o texto ficará em ::itálico::.
+	Quando quiser que um texto apareça em itálico, basta adicioná-lo entre : : conteúdo aqui : : (dois dois pontos), dessa forma, o texto ficará em ::itálico::.
 	
-	Para fazer com que um treco do texto fique em negrito, coloque-o entre %%** **%%, com isso, o texto ficará em **negrito**.
+	Para fazer com que um treco do texto fique em negrito, coloque-o entre * * conteúdo aqui * * (dois asteriscos), com isso, o texto ficará em **negrito**.
 	
 	Quando precisamos utilizar no meio de um texto algum conteúdo de código, sem gerar uma quebra de linha para isso, ou seja,
-	inline, podemos utilizar %% %% %% %%. Um exemplo é: %%<html></html>%%. Esse texto terá fonte monoespaçada.
+	inline, podemos utilizar % % codigo aqui % % (dois %). Um exemplo é: %%<html></html>%%. Esse texto terá fonte monoespaçada.
 	
 [section Organize informações com listas]
 	Se deseja enumerar itens, pode-se utilizar uma lista numerada, através da Tag %%list%% com o atributo %%number%%. Cada item
