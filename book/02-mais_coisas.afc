@@ -17,8 +17,9 @@
 	
 	Para fazer com que um treco do texto fique em negrito, coloque-o entre * * conteúdo aqui * * (dois asteriscos), com isso, o texto ficará em **negrito**.
 	
-	Quando precisamos utilizar no meio de um texto algum conteúdo de código, sem gerar uma quebra de linha para isso, ou seja,
-	inline, podemos utilizar % % codigo aqui % % (dois %). Um exemplo é: %%<html></html>%%. Esse texto terá fonte monoespaçada.
+	Quando precisamos utilizar no meio de um texto algum conteúdo de código, citar algum arquivo, nome de classe ou algo do tipo,
+	sem gerar uma quebra de linha para isso, ou seja, inline, podemos utilizar % % codigo aqui % % (dois %). 
+	Um exemplo é: %%<html></html>%%. Esse texto terá fonte monoespaçada.
 	
 [section Organize informações com listas]
 	Se deseja enumerar itens, pode-se utilizar uma lista numerada, através da Tag %%list%% com o atributo %%number%%. Cada item
