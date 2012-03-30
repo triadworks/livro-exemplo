@@ -132,7 +132,7 @@
 	Se necessário, é possível utilizar um trecho de código sem formatação alguma. Para isso, basta omitir a
 	linguagem.
 	
-	Você pode utilizar a Tag code dentro de qualquer lugar, como por exemplo, um Box, ou uma lista.
+	Você pode utilizar a Tag %%code%% dentro de qualquer lugar, como por exemplo, um Box, ou uma lista.
 	
 	**Cuidado pois existe um limite de caracteres em uma linha para o código do livro. No caso dos livros, esse limite
 	e de 73 caracteres, para se encaixar bem na página. O autor deve quebrar o código onde
