@@ -19,9 +19,11 @@ você deve criar o livro ou site que quer se referenciar. Olhe esses dois exempl
 	[code]
 		@article{getters-setters-silveira,
 		  author = 	 {Paulo Silveira},
-		  title = 	 {Como não aprender orientação a objetos: getters e setters},
+		  title = 	 {Como não aprender orientação a objetos: getters
+		 	e setters},
 		  year = 	 {2006},
-		  howpublished = {\url{http://www.iturls.com/english/expert/craig/craig1.pdf}}
+		  howpublished = 
+			{\url{http://www.iturls.com/english/expert/craig/craig1.pdf}}
 		}
 
 		@book{lean-startup-ries,
@@ -67,7 +69,8 @@ getters-setters-silveira, lean-startup-ries %%), gerando [ref getters-setters-pa
 	
 [code]
 	Você gostou do capítulo [ref-label capitulo-referencias]? Já aprendeu 
-	a escrever referência bibliográfica na seção [ref-label adicione-referencias]?
+	a escrever referência bibliográfica na seção 
+	[ref-label adicione-referencias]?
 [/code]
 
 	Ele mesmo saberá se a referência é a um capítulo ou seção, dependendo de onde você criou o label (se for antes de qualquer seção, será usada a numeração de capítulo).
@@ -79,12 +82,13 @@ não trabalhar bem com a ideia de uma página (kindle, por exemplo).
   Para referenciar uma imagem você deve definir um label para a imagem na tag %%img%%. Depois, para referenciar a imagem no texto, use a tag %%ref-label%%, como no seguinte exemplo:
   
   [code]
-    [img resources/candle.jpg w=50 "imagem de um candlestick" label=candlestick]
+    [img resources/candle.jpg w=50 "imagem de um candlestick" 
+		label=candlestick]
     A imagem [ref-label candlestick] exibe um candlestick.
   [/code]
   
   Que resulta na seguinte imagem, seguida pelo texto:
   
-  [img resources/candle.jpg w=50 "imagem de um candlestick" label=candlestick]
+  [img resources/candle.jpg w=90 "imagem de um candlestick" label=candlestick]
   A imagem [ref-label candlestick] exibe um candlestick.
   

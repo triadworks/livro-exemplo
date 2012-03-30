@@ -46,7 +46,8 @@
 	
 	[code]
 		[box Linearidade do texto]
-			Ao apresentarmos uma ideia, devemos manter uma sequência lógica em nosso texto...
+			Ao apresentarmos uma ideia, devemos manter uma sequência lógica em noss 
+			texto...
 		[/box]
 	[/code]
 	
@@ -71,7 +72,7 @@
 	Um exemplo de uso é:
 	
 	[code]
-		[img caminho/do/arquivo/de/imagens w=90%]
+		[img caminho/do/arquivo/de/imagens w=100%]
 	[/code]
 	
 	É recomendado também adicionar legenda nas fotos. Para isso, basta adicionar um texto entre aspas:
