@@ -96,16 +96,16 @@ não trabalhar bem com a ideia de uma página (kindle, por exemplo).
   Agora você também pode referenciar trechos de código do livro, para isso, você também deve definir um label na tag %%code%%. Para referenciá-lo no texto, use a tag %%ref-code%%, por exemplo:
   
   [code]
-    [code label=helloWorld]
+    [code label=world]
       System.out.println("Hello world!");
     [/code]
-    O execução do código na listagem [ref-code helloWolrd] resulta em...
+    O execução do código na listagem [ref-code world] resulta em...
   [/code]
   
   Que resulta no seguinte texto:
   
-  [code label=helloWorld]
+  [code label=world]
     System.out.println("Hello world!");
   [/code]
-  O execução do código na listagem [ref-code helloWolrd] resulta em...
+    O execução do código na listagem [ref-code world] resulta em...
   
