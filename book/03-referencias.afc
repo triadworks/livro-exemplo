@@ -92,3 +92,20 @@ não trabalhar bem com a ideia de uma página (kindle, por exemplo).
   [img resources/candle.jpg w=90 "imagem de um candlestick" label=candlestick]
   A imagem [ref-label candlestick] exibe um candlestick.
   
+[section Referenciando trechos de código]
+  Agora você também pode referenciar trechos de código do livro, para isso, você também deve definir um label na tag %%code%%. Para referenciá-lo no texto, use a tag %%ref-code%%, por exemplo:
+  
+  [code]
+    [code label=helloWorld]
+      System.out.println("Hello world!");
+    [/code]
+    O execução do código na listagem [ref-code helloWolrd] resulta em...
+  [/code]
+  
+  Que resulta no seguinte texto:
+  
+  [code label=helloWorld]
+    System.out.println("Hello world!");
+  [/code]
+  O execução do código na listagem [ref-code helloWolrd] resulta em...
+  
