@@ -92,6 +92,7 @@ não trabalhar bem com a ideia de uma página (kindle, por exemplo).
   [img resources/candle.jpg w=90 "imagem de um candlestick" label=candlestick]
   A imagem [ref-label candlestick] exibe um candlestick.
   
+[TODO teste para o build]
 [section Referenciando trechos de código]
   Agora você também pode referenciar trechos de código do livro, para isso, você também deve definir um label na tag %%code%%. Para referenciá-lo no texto, use a tag %%ref-code%%, por exemplo:
   
