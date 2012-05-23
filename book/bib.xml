@@ -1,0 +1,20 @@
+<bibliography>
+  <bibliography-entry>
+    <author>Paulo Silveira</author>
+    <title>Como não aprender orientação a objetos: getters e setters</title>
+    <year>2006</year>
+    <howPublished>http://www.iturls.com/english/expert/craig/craig1.pdf</howPublished>
+    <type>article</type>
+    <label>getters-setters-silveira</label>
+  </bibliography-entry>
+  <bibliography-entry>
+    <author>Eric Ries</author>
+    <title>Lean Startup</title>
+    <year>2011</year>
+    <howPublished>http://www.theleanstartup.com/book</howPublished>
+    <type>article</type>
+    <label>lean-startup-ries</label>
+    <publisher>Editora Convencional</publisher>
+  </bibliography-entry>
+</bibliography>
+
