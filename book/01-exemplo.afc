@@ -51,6 +51,9 @@
 		[/box]
 	[/code]
 	
+	Note que por padrão, os boxes não possuem formatação de texto, ou seja, não tem itálico e nem negrito. Caso queira fazer,
+	basta usar as formatações do tubaina para negrito e itálico.
+	
 [section Índice remissivo]
 	O índice remissivo é criado a partir da definição do autor dos pontos de índice. Para isso, em qualquer lugar do texto, basta
 	utilizar a Tag %%[index]%% contendo o nome do índice. Automaticamente o número da página é descoberto e colocado no índice.
