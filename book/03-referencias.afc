@@ -13,26 +13,30 @@
 	
 	Fica fácil criar uma bibliografia sólida e consistente. Aliás, é importante sempre citar outras fontes que
 sustentem suas afirmações, em especial opiniões. Se for algo muito polêmico, compensa também citar fontes que
-pensam diferentemente e deixar o olhar crítico do leitor agir. Primeiramente, dentro do arquivo %%book.bib%%,
+pensam diferentemente e deixar o olhar crítico do leitor agir. Primeiramente, dentro do arquivo %%bib.xml%%,
 você deve criar o livro ou site que quer se referenciar. Olhe esses dois exemplos:
 	
-	[code]
-		@article{getters-setters-silveira,
-		  author = 	 {Paulo Silveira},
-		  title = 	 {Como não aprender orientação a objetos: getters
-		 	e setters},
-		  year = 	 {2006},
-		  howpublished = 
-			{\url{http://www.iturls.com/english/expert/craig/craig1.pdf}}
-		}
+	[code xml]
+	<bibliography>
+	  <bibliography-entry>
+	    <author>Paulo Silveira</author>
+	    <title>Como não aprender orientação a objetos: getters e setters</title>
+	    <year>2006</year>
+	    <type>article</type>
+	    <label>getters-setters-silveira</label>
+	  </bibliography-entry>
+	  <bibliography-entry>
+	    <author>Eric Ries</author>
+	    <title>Lean Startup</title>
+	    <year>2011</year>
+	    <howPublished>http://www.theleanstartup.com/book</howPublished>
+	    <type>article</type>
+	    <label>lean-startup-ries</label>
+	    <publisher>Editora Convencional</publisher>
+	  </bibliography-entry>
+	</bibliography>
 
-		@book{lean-startup-ries,
-		  author = 	 {Eric Ries},
-		  title = 	 {Lean Startup},
-		  year = 	 {2011},
-		  publisher = {Editora Convencional},
-		  howpublished = {\url{http://www.theleanstartup.com/book}}
-		}
+
 	[/code]
 	
 	Para se referenciar, basta fazer:
@@ -53,6 +57,8 @@ específicos, não há necessidade de ficar escrevendo o nome do livro/blog/site
 
 	Você pode se referenciar a dois itens dentro de uma mesma tag %%ref%%, separando por virgula (%%ref 
 getters-setters-silveira, lean-startup-ries %%), gerando [ref getters-setters-silveira, lean-startup-ries].
+
+	Caso queira se referir a um post de blog, ao invés de %%<type>article</type>%%, use %%<type>misc</type>%%, assim a URL que você colocar no %%<howPublished>%% será exibida corretamente.
 	
 [section Referenciando uma seção ou capítulo]
 
