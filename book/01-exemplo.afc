@@ -70,7 +70,10 @@
 	Para adicionar imagens, basta utilizar a Tag %%img%% indicando qual o nome do arquivo que deseja importar. Lembre-se de que
 	o caminho do arquivo da imagem, deverá ser relativo ao diretório onde se encontra o arquivo %%.afc%%.
 	
-	Também é possível dizer a proporção que deve ser utilizada para a imagem através de uma porcentagem.
+	Também é possível dizer quanto da largura da página será ocupado pela imagem através de uma porcentagem. 100% significa que 
+	a imagem terá a largura de toda a parte onde cabe texto na página (exceto as margens laterais). Cuidado, pois em e-books essa
+	propriedade não surtirá efeito, pois, como a tela é menor, a imagem ocupará sempre seu tamanho original e caso estoure, terá
+	a largura máxima permitida pelo device.
 	
 	Um exemplo de uso é:
 	
