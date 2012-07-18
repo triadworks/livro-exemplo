@@ -86,6 +86,9 @@
 	[code]
 		[img caminho/do/arquivo/de/imagens w=90% "imagem com legenda"]
 	[/code]
+	
+	**É importantíssimo lembrar** que não se deve utilizar imagens com fundo transparente, pois alguns leitores de 
+	e-book não lidam bem com elas. Por isso, utilize sempre um fundo para as imagens, preferencialmente branco. 
 
 [section Criação de To-Dos]
 	Você pode criar to-dos, que são lembretes de algo que você precisa fazer depois. Os textos marcados como To-Dos não
