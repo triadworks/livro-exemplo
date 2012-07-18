@@ -16,6 +16,8 @@
 			Em seguida vai o conteúdo da seção...
 	[/code]
 	
+	Utilize nomes que chamem a atenção do leitor, como verbos no imperativo, por exemplo.
+	
 [section Quebras de linha e de página]
 	As quebras de linha devem ser especificadas no arquivo .afc com duas quebras (ou seja, dois enter). Uma só quebra é desconsiderada,
 	pois admite-se que é apenas para organização do arquivo fonte. Portanto, sempre que quiser um novo parágrafo (como o abaixo), 
@@ -60,8 +62,7 @@
 	[index Índice]
 	
 	No caso dessa seção, foi definido um índice que pode ser visto no final do livro. Para isso, utilizamos o seguinte:
-	
-	
+
 	[code]
 		[index Índice]
 	[/code]

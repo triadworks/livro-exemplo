@@ -71,6 +71,9 @@ E você ainda consegue colocar um texto como se fosse a descrição dessa parte!
 		[/list]
 	[/code]
 	
+	**Cuidado** para não utilizar listas para elencar conteúdos muito longos. Um sintoma de que isso está acontecendo é quando
+	o item da sua lista fica com mais de 6 ou 7 linhas de texto. Nesse caso, talvez seja mais indicado o uso de um %%title%%.
+	
 [section Escrevendo códigos]
 	É possível escrever código em diversas linguagens e fazer com que eles tenham syntax highlight adequado. Para isso,
 	basta usar a Tag %%code%% especificando uma linguagem.
@@ -91,7 +94,7 @@ E você ainda consegue colocar um texto como se fosse a descrição dessa parte!
 		System.out.println("oi");
 	[/code]
 	
-	Para a identação do código será utilizada a mesma que for colocada dentro da Tag %%code%%.
+	Para a indentação do código será utilizada a mesma que for colocada dentro da Tag %%code%%.
 	
 	Para uma lista das linguagens disponíveis, veja: http://pygments.org/docs/lexers/
 	
@@ -102,6 +105,7 @@ E você ainda consegue colocar um texto como se fosse a descrição dessa parte!
 	
 	Você pode utilizar a Tag %%code%% dentro de qualquer lugar, como por exemplo, um Box, ou uma lista.
 	
-	**Cuidado pois existe um limite de caracteres em uma linha para o código do livro. No caso dos livros, esse limite
+	**Cuidado, pois existe um limite de caracteres em uma linha para o código do livro. No caso dos livros, esse limite
 	e de 73 caracteres, para se encaixar bem na página. O autor deve quebrar o código onde
-	achar mais conveniente. Caso o limite de caracteres seja estourado, o build falhará.**
+	achar mais conveniente. Durante a revisão final, os editores verificarão se não há nenhuma linha de código estourando
+	a página.**
