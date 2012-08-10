@@ -23,8 +23,10 @@ Mesmo quando um código a ser apresentado é pequeno, não devemos jogá-lo para
 class ConectorDoS3 {
 	public static void main(String ... args) {
 		// puxa as credenciais do arquivo AwsCredentials.properties
-		InputStream credentials = ConectorDoS3.class.getResourceAsStream("AwsCredentials.properties");
-		PropertiesCredentials awsCredentials = new PropertiesCredentials(credentials);		
+		InputStream credentials = ConectorDoS3.class.
+				getResourceAsStream("AwsCredentials.properties");
+		PropertiesCredentials awsCredentials = 
+				new PropertiesCredentials(credentials);		
 		
 		// cria objeto responsável por fazer conexao com o AWS
 		AmazonS3 s3 = new AmazonS3Client(awsCredentials);
@@ -37,8 +39,10 @@ Essa frase é pouco convidativa. Não explica o que voce vai fazer, nem o que o 
 ::Vamos então acessar os serviços da amazon S3. Para começar, certamente precisamos nos identificar de alguma forma. Para se conectar ao sistema, a API é simples: primeiro vamos ler o conteúdo das nossas credenciais, que estão em %%AwsCredentials.properties%%, jogando essa informação dentro de uma classe específica do AWS, chamada %%PropertiesCredentials%%. Com essas informações, instanciamos uma classe que é capaz de se comunicar com o S3, a %%AmazonS3Client%%. Observe o código que realiza essas operações::.
 
 [code java]
-InputStream credentials = ConectorDoS3.class.getResourceAsStream("AwsCredentials.properties");
-PropertiesCredentials awsCredentials = new PropertiesCredentials(credentials);
+InputStream credentials = ConectorDoS3.class.
+		getResourceAsStream("AwsCredentials.properties");
+PropertiesCredentials awsCredentials = 
+		new PropertiesCredentials(credentials);
 AmazonS3 s3 = new AmazonS3Client(awsCredentials);
 [/code]
 
