@@ -30,7 +30,7 @@ class ConectorDoS3 {
 		AmazonS3 s3 = new AmazonS3Client(awsCredentials);
 	}
 }
-[/java]
+[/code]
 
 Essa frase é pouco convidativa. Não explica o que voce vai fazer, nem o que o usuário deve esperar. O código é bastante assustador; explicá-lo através de comentários nunca é boa opção. Repare como fica melhor agora:
 
@@ -40,7 +40,7 @@ Essa frase é pouco convidativa. Não explica o que voce vai fazer, nem o que o 
 InputStream credentials = ConectorDoS3.class.getResourceAsStream("AwsCredentials.properties");
 PropertiesCredentials awsCredentials = new PropertiesCredentials(credentials);
 AmazonS3 s3 = new AmazonS3Client(awsCredentials);
-[/java]
+[/code]
 
 O código agora está sem todo o peso da declaração da classe e do main, o que também facilita bastante. É claro que você deve pensar no contexto: se o livro é para quem nunca viu Java na vida, é importante sim declarar a classe e o main. No caso de um curso mais avançado, você deve saber bem seu público alvo, para poder decidir quando deve ou não expor códigos inteiros ou apenas snippets. Por regra geral, quanto mais você conseguir quebrar o código e intercalá-lo com frases, melhor.
 
