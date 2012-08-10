@@ -1,5 +1,7 @@
 [chapter Como escrever um livro para a Casa do Código?]
 
+Atenção: Mais importante que usar o sistema da casa do código para escrever o seu livro na integração contínua, é escrever um bom livro! Leia este capítulo com atenção.
+
 [section Defina muito bem seu público alvo]
 
 Um dos pontos principais do seu livro é conhecer o público alvo. Você deve definir qual é o nível de conhecimento que ele possui. É para quem nunca ouvi falar da tecnologia? Ou para quem já está trabalhando, mas não teve uma educação formal no assunto? Apenas para quem já conhece muito da tecnologia? Seja qual for, você deve respeitar esse perfil, lembrando disso durante todo o livro.
@@ -42,3 +44,10 @@ AmazonS3 s3 = new AmazonS3Client(awsCredentials);
 
 O código agora está sem todo o peso da declaração da classe e do main, o que também facilita bastante. É claro que você deve pensar no contexto: se o livro é para quem nunca viu Java na vida, é importante sim declarar a classe e o main. No caso de um curso mais avançado, você deve saber bem seu público alvo, para poder decidir quando deve ou não expor códigos inteiros ou apenas snippets. Por regra geral, quanto mais você conseguir quebrar o código e intercalá-lo com frases, melhor.
 
+[section Conclusão]
+
+Mostre primeiro o problema que você quer resolver.
+
+Evite códigos grandes ou que apareçam para só depois serem explicados.
+
+Uso do construtivismo. Você pode ir escrevendo código que não funciona até chegar a versão funcional, se isso vai ajudar a quebrar em mais passos e a fazer com que o próprio leitor raciocine a respeito.
