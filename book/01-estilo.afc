@@ -2,7 +2,43 @@
 
 [section Defina muito bem seu público alvo]
 
+Um dos pontos principais do seu livro é conhecer o público alvo. Você deve definir qual é o nível de conhecimento que ele possui. É para quem nunca ouvi falar da tecnologia? Ou para quem já está trabalhando, mas não teve uma educação formal no assunto? Apenas para quem já conhece muito da tecnologia? Seja qual for, você deve respeitar esse perfil, lembrando disso durante todo o livro.
+
+É claro que, se o livro for para alguém que esteja começando ou mesmo intermediário, você pode sim adicionar alguns capítulos finais que sejam desafiadores, de assuntos mais específicos e aprofundados. 
+
+Alguns exemplos de definição de público alvo:
+
+
 [section Mostre primeiro os problemas, depois as soluções]
 
 [section Evite assustas as pessoas com códigos longos ou inesperados]
+
+Mesmo quando um código a ser apresentado é pequeno, não devemos jogá-lo para depois explicá-lo. Repare neste exemplo:
+
+::Vamos então acessar os serviços da amazon S3. Crie uma classe %%ConectorDoS3%% com o seguinte código:::
+
+[code java]
+class ConectorDoS3 {
+	public static void main(String ... args) {
+		// puxa as credenciais do arquivo AwsCredentials.properties
+		InputStream credentials = ConectorDoS3.class.getResourceAsStream("AwsCredentials.properties");
+		PropertiesCredentials awsCredentials = new PropertiesCredentials(credentials);		
+		
+		// cria objeto responsável por fazer conexao com o AWS
+		AmazonS3 s3 = new AmazonS3Client(awsCredentials);
+	}
+}
+[/java]
+
+Essa frase é pouco convidativa. Não explica o que voce vai fazer, nem o que o usuário deve esperar. O código é bastante assustador; explicá-lo através de comentários nunca é boa opção. Repare como fica melhor agora:
+
+::Vamos então acessar os serviços da amazon S3. Para começar, certamente precisamos nos identificar de alguma forma. Para se conectar ao sistema, a API é simples: primeiro vamos ler o conteúdo das nossas credenciais, que estão em %%AwsCredentials.properties%%, jogando essa informação dentro de uma classe específica do AWS, chamada %%PropertiesCredentials%%. Com essas informações, instanciamos uma classe que é capaz de se comunicar com o S3, a %%AmazonS3Client%%. Observe o código que realiza essas operações::.
+
+[code java]
+InputStream credentials = ConectorDoS3.class.getResourceAsStream("AwsCredentials.properties");
+PropertiesCredentials awsCredentials = new PropertiesCredentials(credentials);
+AmazonS3 s3 = new AmazonS3Client(awsCredentials);
+[/java]
+
+O código agora está sem todo o peso da declaração da classe e do main, o que também facilita bastante. É claro que você deve pensar no contexto: se o livro é para quem nunca viu Java na vida, é importante sim declarar a classe e o main. No caso de um curso mais avançado, você deve saber bem seu público alvo, para poder decidir quando deve ou não expor códigos inteiros ou apenas snippets. Por regra geral, quanto mais você conseguir quebrar o código e intercalá-lo com frases, melhor.
 
