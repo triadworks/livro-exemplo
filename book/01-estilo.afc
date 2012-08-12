@@ -12,6 +12,59 @@ Em especial, saiba dizer se seu livro é para quem não conhece absolutamente na
 
 [section Mostre primeiro os problemas, depois as soluções, evitando definições]
 
+No começo de um capítulo ou de uma seção, é muito importante motivar o que será apresentado. Definições devem ser evitadas nesse começo. Um exemplo seria como apresentar o conceito de herança. Veja como ela é definida de forma enciclopédica na wikipedia:
+
+"::Inheritance is a way to reuse code of existing objects, or to establish a subtype from an existing object, or both, depending upon programming language support. In classical inheritance where objects are defined by classes, classes can inherit attributes and behavior from pre-existing classes called base classes, superclasses, parent classes or ancestor classes.::"
+
+Apesar de correto, o texto fica perdido, sem um guia, sem um porquê. Repare agora na descrição mais detalhada, que vai, ao final, mostrar a necessidade da herança:
+
+::Como toda empresa, nosso Banco possui funcionários. Vamos modelar a classe %%Funcionario%%::
+
+[code java]
+	class Funcionario {
+		String nome;
+		String cpf;
+		double salario;
+		 // métodos devem vir aqui
+	}
+[/code]
+
+::Além de um funcionário comum, há também outros cargos, como os gerentes. Os gerentes guardam a mesma 
+informação que um funcionário comum, mas possuem outras informações, além de ter funcionalidades um 
+pouco diferentes. Um gerente no nosso banco possui também uma senha numérica que permite o acesso ao 
+sistema interno do banco, além do número de funcionários que ele gerencia::
+
+[code java]
+class Gerente {
+	String nome;
+	String cpf;
+	double salario;
+	int senha;
+	int numeroDeFuncionariosGerenciados;
+		
+	public boolean autentica(int senha) {
+		// ...
+	}
+}
+[/code]
+
+::Se tivéssemos um outro tipo de funcionário que tem características diferentes do funcionário comum, 
+precisaríamos criar uma outra classe e copiar o código novamente!
+
+Além disso, se um dia precisarmos adicionar uma nova informação para todos os funcionários, 
+precisaremos passar por todas as classes de funcionário e adicionar esse atributo. 
+O problema acontece novamente por não centralizarmos as informações principais do funcionário em um 
+único lugar!
+
+Existe um jeito, em Java, de relacionarmos uma classe de tal maneira que uma delas **herda** tudo que 
+a outra tem. Isto é uma relação de classe mãe e classe filha. No nosso caso, gostaríamos de fazer com 
+que o %%Gerente%% tivesse tudo que um %%Funcionario%% tem, gostaríamos que ela fosse uma **extensão** 
+de %%Funcionario%%. Fazemos isto através da palavra chave %%extends%%.::
+
+Conceitos precisam ser sempre apresentados de forma a motivar o leitor. Eles precisam aparecer só depois que um problema surgiu. Esse é o segredo de uma leitura fluída: primeiro o problema, e só depois a solução. A definição pode sumarizar tudo isso, opcionalmente.
+
+É claro que há exceções, em especial quando for apresentar detalhes pequenos de uma API.
+
 [section Evite assustas as pessoas com códigos longos ou inesperados]
 
 Mesmo quando um código a ser apresentado é pequeno, não devemos jogá-lo para depois explicá-lo. Repare neste exemplo:
