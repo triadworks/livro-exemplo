@@ -65,7 +65,7 @@ Conceitos precisam ser sempre apresentados de forma a motivar o leitor. Eles pre
 
 É claro que há exceções, em especial quando for apresentar detalhes pequenos de uma API.
 
-[section Evite assustas as pessoas com códigos longos ou inesperados]
+[section Evite assustar as pessoas com códigos longos ou inesperados]
 
 Mesmo quando um código a ser apresentado é pequeno, não devemos jogá-lo para depois explicá-lo. Repare neste exemplo:
 
@@ -98,7 +98,7 @@ PropertiesCredentials awsCredentials =
 AmazonS3 s3 = new AmazonS3Client(awsCredentials);
 [/code]
 
-O código agora está sem todo o peso da declaração da classe e do main, o que também facilita bastante. É claro que você deve pensar no contexto: se o livro é para quem nunca viu Java na vida, é importante sim declarar a classe e o main. No caso de um curso mais avançado, você deve saber bem seu público alvo, para poder decidir quando deve ou não expor códigos inteiros ou apenas snippets. Por regra geral, quanto mais você conseguir quebrar o código e intercalá-lo com frases, melhor.
+O código agora está sem todo o peso da declaração da classe e do %%main%%, o que também facilita bastante. É claro que você deve pensar no contexto: se o livro é para quem nunca viu Java na vida, é importante sim declarar a classe e o %%main%%. No caso de um livro mais avançado, você deve saber bem seu público alvo, para poder decidir quando deve ou não expor códigos inteiros ou apenas snippets. Por regra geral, quanto mais você conseguir quebrar o código e intercalá-lo com frases, melhor.
 
 [section Conclusão]
 
