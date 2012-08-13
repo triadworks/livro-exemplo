@@ -100,6 +100,28 @@ AmazonS3 s3 = new AmazonS3Client(awsCredentials);
 
 O código agora está sem todo o peso da declaração da classe e do %%main%%, o que também facilita bastante. É claro que você deve pensar no contexto: se o livro é para quem nunca viu Java na vida, é importante sim declarar a classe e o %%main%%. No caso de um livro mais avançado, você deve saber bem seu público alvo, para poder decidir quando deve ou não expor códigos inteiros ou apenas snippets. Por regra geral, quanto mais você conseguir quebrar o código e intercalá-lo com frases, melhor.
 
+[section Foco e concisão]
+
+Quando for explicar um assunto, procure focar os exemplos e códigos apenas no tópico em questão. Seja conciso e evite adicionar exemplos mais complexos que tirem a atenção do leitor daquele pequeno ponto que é importante nesse momento.
+
+Exemplo: se você estiver ensinando CSS e a difícil propriedade %%clear%%, não coloque um código como esse para exemplificar a explicação:
+
+[code css]
+#topico {
+  background: url(imagem.png) repeat-x;
+  border-radius: 20px;
+  color: #BADA55;
+  clear: left;
+  display: block;
+  font-size: 300%;
+  line-height: 1.5;
+  text-align: center;
+}
+[/code]
+
+Certamente é um elemento muito bonito visualmente, com cores, fundos e até bordas redondas. Mas repare como o foco da seção, que era explicar %%clear%%, se perde com um código extenso poluído com propriedades não importantes para o entendimento do assunto.
+
+Seja conciso nos exemplos. Escreva o menor código possível que demonstre o que você precisa explicar naquele momento. Evite se perder em coisas desnecessárias.
 [section Conclusão]
 
 Mostre primeiro o problema que você quer resolver.
