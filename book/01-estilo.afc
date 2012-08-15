@@ -122,6 +122,8 @@ Exemplo: se você estiver ensinando CSS e a difícil propriedade %%clear%%, não
 Certamente é um elemento muito bonito visualmente, com cores, fundos e até bordas redondas. Mas repare como o foco da seção, que era explicar %%clear%%, se perde com um código extenso poluído com propriedades não importantes para o entendimento do assunto.
 
 Seja conciso nos exemplos. Escreva o menor código possível que demonstre o que você precisa explicar naquele momento. Evite se perder em coisas desnecessárias.
+
+
 [section Conclusão]
 
 Mostre primeiro o problema que você quer resolver.
@@ -129,3 +131,7 @@ Mostre primeiro o problema que você quer resolver.
 Evite códigos grandes ou que apareçam para só depois serem explicados.
 
 Uso do construtivismo. Você pode ir escrevendo código que não funciona até chegar a versão funcional, se isso vai ajudar a quebrar em mais passos e a fazer com que o próprio leitor raciocine a respeito.
+
+[title Organize seu tempo para escrever o livro!]
+
+Não perca o ritmo e cobre sempre a revisão dos editores. É melhor separar um pouco do seu tempo, porém todos os dias, do que escrever em alguns boosts de inspiração. Escrever regularmente é a melhor forma de criar um texto mais coeso, e de terminar seu livro em menos tempo.
